@@ -10,6 +10,7 @@
 <body>
 <f:view>
 	<h:inputText value="#{manager.name}"></h:inputText>
+	<h:commandButton value="clicker" actionListener="#{manager.add}"></h:commandButton>
 </f:view>
 </body>
 </html>
