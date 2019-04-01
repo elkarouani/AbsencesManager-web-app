@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSessionListener;
 @WebListener
 public class ProjectListener implements HttpSessionListener, HttpSessionAttributeListener, HttpSessionActivationListener, HttpSessionBindingListener, HttpSessionIdListener {
 
-	EntityManager em;
+//	EntityManager em;
 	
     /**
      * Default constructor. 
@@ -33,9 +33,9 @@ public class ProjectListener implements HttpSessionListener, HttpSessionAttribut
      */
     public void sessionCreated(HttpSessionEvent se)  { 
          // TODO Auto-generated method stub
-    	EntityManagerFactory factory = Persistence.createEntityManagerFactory("AbsencesManager");
-    	em = factory.createEntityManager();
-    	se.getSession().setAttribute("entitymanager", em);
+//    	EntityManagerFactory factory = Persistence.createEntityManagerFactory("AbsencesManager");
+//    	em = factory.createEntityManager();
+//    	se.getSession().setAttribute("entitymanager", em);
     }
 
 	/**
