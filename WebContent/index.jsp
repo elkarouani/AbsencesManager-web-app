@@ -9,7 +9,9 @@
 </head>
 <body>
 <f:view>
-
+	<h:form>
+		<h:commandButton value="add" actionListener="#{manager.add}"></h:commandButton>	
+	</h:form>
 </f:view>
 </body>
 </html>
