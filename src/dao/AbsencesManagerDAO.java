@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.List;
+
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -19,7 +21,6 @@ public class AbsencesManagerDAO {
 	}
 	
 	public void addAbsence(Absence absence){
-		System.out.println("an absence with title : " + absence.getTitle());
 		try {
 			EntityTransaction t = em.getTransaction();
 			t.begin();
@@ -30,8 +31,15 @@ public class AbsencesManagerDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		
-		
+	}
+	
+	public List<Absence> getAllAbsences(){
+		try {
+			return em.createQuery("SELECT a FROM Absence a", Absence.class).getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 }
