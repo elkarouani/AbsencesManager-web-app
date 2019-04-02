@@ -33,6 +33,19 @@ public class AbsencesManagerDAO {
 		}
 	}
 	
+	public void modifyAbsence(Absence absence){
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+			em.merge(absence);
+			t.commit();
+			System.out.println("well modified");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
 	public List<Absence> getAllAbsences(){
 		try {
 			return em.createQuery("SELECT a FROM Absence a", Absence.class).getResultList();

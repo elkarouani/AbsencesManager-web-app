@@ -12,7 +12,9 @@
 	<h:form>
 		<h:outputLabel value="Title : "></h:outputLabel>
 		<h:inputText value="#{manager.title}"></h:inputText>
-		<h:commandButton value="add" actionListener="#{manager.add}"></h:commandButton><br><br>
+		<h:inputHidden value="#{manager.id}"></h:inputHidden>
+		<h:commandButton value="add" actionListener="#{manager.add}"></h:commandButton>
+		<h:commandButton value="modify" actionListener="#{manager.modify}"></h:commandButton><br><br>
 	</h:form>
 	<h:dataTable value="#{manager.absencesListe}" var="absence" border="1" style="width:70%; border:1px solid #000;">
 		<h:column>
@@ -22,6 +24,16 @@
 		<h:column>
 			<f:facet name="header"><h:outputText value="Title"></h:outputText></f:facet>
 			<h:outputText value="#{absence.title}"></h:outputText>
+		</h:column>
+		<h:column>
+			<f:facet name="header"><h:outputText value="Actions"></h:outputText></f:facet>
+			<h:form>
+				<h:commandButton value="Select" type="button" actionListener="#{manager.select}">
+					<f:param name="id" value="#{absence.id}"></f:param>
+					<f:param name="title" value="#{absence.title}"></f:param>
+				</h:commandButton>
+				<h:commandButton value="Remove"></h:commandButton>
+			</h:form>
 		</h:column>
 	</h:dataTable>
 </f:view>
