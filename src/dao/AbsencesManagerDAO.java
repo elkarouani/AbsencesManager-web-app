@@ -20,42 +20,45 @@ public class AbsencesManagerDAO {
 				.getExternalContext().getSession(true)).getAttribute("entitymanager");
 	}
 	
-	public void addAbsence(Absence absence){
+	public String addAbsence(Absence absence){
 		try {
 			EntityTransaction t = em.getTransaction();
 			t.begin();
 			em.persist(absence);
 			t.commit();
-			System.out.println("well added");
+			return "well added";
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return "error";
 		}
 	}
 	
-	public void modifyAbsence(Absence absence){
+	public String modifyAbsence(Absence absence){
 		try {
 			EntityTransaction t = em.getTransaction();
 			t.begin();
 			em.merge(absence);
 			t.commit();
-			System.out.println("well modified");
+			return "well modified";
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return "error";
 		}
 	}
 	
-	public void deleteAbsence(int id_absence){
+	public String deleteAbsence(int id_absence){
 		try {
 			EntityTransaction t = em.getTransaction();
 			t.begin();
 			em.remove(em.find(Absence.class, id_absence));
 			t.commit();
-			System.out.println("well deleted");
+			return "well deleted";
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return "error";
 		}
 	}
 	

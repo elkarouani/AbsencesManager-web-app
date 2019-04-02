@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -37,16 +38,18 @@ public class BeansManager {
 	public void add(ActionEvent event) {
 		Absence absence = new Absence();
 		absence.setTitle(title);
-		dao.addAbsence(absence);
+		String message = dao.addAbsence(absence);
 		absencesListe = dao.getAllAbsences();
+		FacesContext.getCurrentInstance().addMessage(title, new FacesMessage(message));
 	}
 	
 	public void modify(ActionEvent event) {
 		Absence absence = new Absence();
 		absence.setId(Integer.parseInt(id));
 		absence.setTitle(title);
-		dao.modifyAbsence(absence);
+		String message = dao.modifyAbsence(absence);
 		absencesListe = dao.getAllAbsences();
+		FacesContext.getCurrentInstance().addMessage(title, new FacesMessage(message));
 	}
 	
 	public void select(ActionEvent event){
@@ -59,8 +62,9 @@ public class BeansManager {
 	public void remove(ActionEvent event){
 		FacesContext context = FacesContext.getCurrentInstance();
 		Map<String, String> param = context.getExternalContext().getRequestParameterMap();
-		dao.deleteAbsence(Integer.parseInt(param.get("id")));
+		String message = dao.deleteAbsence(Integer.parseInt(param.get("id")));
 		absencesListe = dao.getAllAbsences();
+		FacesContext.getCurrentInstance().addMessage(title, new FacesMessage(message));
 	}
 	
 	public void print(ActionEvent event){
@@ -84,7 +88,7 @@ public class BeansManager {
 			}
 	        document.add(table);
 	        document.close();
-			System.out.println("document printed");
+	        FacesContext.getCurrentInstance().addMessage(title, new FacesMessage("document printed"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

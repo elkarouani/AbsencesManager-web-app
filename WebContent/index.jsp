@@ -9,6 +9,7 @@
 </head>
 <body>
 <f:view>
+	<h:messages></h:messages>
 	<h:form>
 		<h:outputLabel value="Title : "></h:outputLabel>
 		<h:inputText value="#{manager.title}"></h:inputText>
