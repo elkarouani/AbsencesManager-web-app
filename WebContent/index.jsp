@@ -38,6 +38,9 @@
 			</h:form>
 		</h:column>
 	</h:dataTable>
+	<h:form>
+		<h:commandButton value="Print" actionListener="#{manager.print}"></h:commandButton>
+	</h:form>
 </f:view>
 </body>
 </html>
