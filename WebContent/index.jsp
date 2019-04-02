@@ -28,11 +28,13 @@
 		<h:column>
 			<f:facet name="header"><h:outputText value="Actions"></h:outputText></f:facet>
 			<h:form>
-				<h:commandButton value="Select" type="button" actionListener="#{manager.select}">
+				<h:commandButton value="Select" actionListener="#{manager.select}">
 					<f:param name="id" value="#{absence.id}"></f:param>
 					<f:param name="title" value="#{absence.title}"></f:param>
 				</h:commandButton>
-				<h:commandButton value="Remove"></h:commandButton>
+				<h:commandButton value="Remove" actionListener="#{manager.remove}">
+					<f:param name="id" value="#{absence.id}"></f:param>
+				</h:commandButton>
 			</h:form>
 		</h:column>
 	</h:dataTable>

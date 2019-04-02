@@ -45,7 +45,13 @@ public class BeansManager {
 		this.id = param.get("id");
 		this.title = param.get("title");
 	}
-
+	
+	public void remove(ActionEvent event){
+		FacesContext context = FacesContext.getCurrentInstance();
+		Map<String, String> param = context.getExternalContext().getRequestParameterMap();
+		dao.deleteAbsence(Integer.parseInt(param.get("id")));
+	}
+	
 	public String getTitle() {
 		return title;
 	}

@@ -46,6 +46,19 @@ public class AbsencesManagerDAO {
 		}
 	}
 	
+	public void deleteAbsence(int id_absence){
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+			em.remove(em.find(Absence.class, id_absence));
+			t.commit();
+			System.out.println("well deleted");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
 	public List<Absence> getAllAbsences(){
 		try {
 			return em.createQuery("SELECT a FROM Absence a", Absence.class).getResultList();
