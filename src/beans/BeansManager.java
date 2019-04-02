@@ -38,6 +38,7 @@ public class BeansManager {
 		Absence absence = new Absence();
 		absence.setTitle(title);
 		dao.addAbsence(absence);
+		absencesListe = dao.getAllAbsences();
 	}
 	
 	public void modify(ActionEvent event) {
@@ -45,6 +46,7 @@ public class BeansManager {
 		absence.setId(Integer.parseInt(id));
 		absence.setTitle(title);
 		dao.modifyAbsence(absence);
+		absencesListe = dao.getAllAbsences();
 	}
 	
 	public void select(ActionEvent event){
@@ -58,6 +60,7 @@ public class BeansManager {
 		FacesContext context = FacesContext.getCurrentInstance();
 		Map<String, String> param = context.getExternalContext().getRequestParameterMap();
 		dao.deleteAbsence(Integer.parseInt(param.get("id")));
+		absencesListe = dao.getAllAbsences();
 	}
 	
 	public void print(ActionEvent event){
