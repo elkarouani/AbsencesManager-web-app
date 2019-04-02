@@ -10,7 +10,10 @@
 <body>
 <f:view>
 	<h:form>
-		<h:commandButton value="add" actionListener="#{manager.add}"></h:commandButton>	
+		<h:outputLabel value="Title : "></h:outputLabel>
+		<h:inputText value="#{manager.title}"></h:inputText><br><br>
+		<h:commandButton value="add" actionListener="#{manager.add}"></h:commandButton>
+			
 	</h:form>
 </f:view>
 </body>

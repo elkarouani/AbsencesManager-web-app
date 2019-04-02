@@ -9,7 +9,8 @@ public class Testing {
 		// TODO Auto-generated method stub
 		Absence absence = new Absence();
 		absence.setTitle("title1");
-		AbsencesManagerDAO.addAbsence(absence);
+		AbsencesManagerDAO dao = new AbsencesManagerDAO();
+		dao.addAbsence(absence);
 	}
 
 }

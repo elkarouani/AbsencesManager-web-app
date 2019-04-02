@@ -2,25 +2,24 @@ package dao;
 
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
+
+
 import entities.Absence;
 
 public class AbsencesManagerDAO {
 	@PersistenceContext(unitName="AbsencesManager")
-	private static EntityManager em;
+	private EntityManager em;
 	
-	public AbsencesManagerDAO (EntityManager em){
-//		em = (EntityManager) ((HttpSession) FacesContext.getCurrentInstance()
-//				.getExternalContext().getSession(true)).getAttribute("entitymanager");
-		
-		
+	public AbsencesManagerDAO (){
+		em = (EntityManager) ((HttpSession) FacesContext.getCurrentInstance()
+				.getExternalContext().getSession(true)).getAttribute("entitymanager");
 	}
 	
-	public static void addAbsence(Absence absence){
+	public void addAbsence(Absence absence){
+		System.out.println("an absence with title : " + absence.getTitle());
 		try {
 			EntityTransaction t = em.getTransaction();
 			t.begin();
@@ -29,7 +28,7 @@ public class AbsencesManagerDAO {
 			System.out.println("well added");
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println("there is an error : " + e.getMessage() );
+			e.printStackTrace();
 		}
 		
 		
