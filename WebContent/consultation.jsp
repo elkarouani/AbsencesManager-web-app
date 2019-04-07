@@ -24,7 +24,17 @@
 				</h:form>
 			</div>
   			<div class="card-body">
-    			This is some text within a card body.
+    			<div class="row">
+    				<div class="col">
+    					<h:form>
+    						<h:outputLabel value="étudiant : "></h:outputLabel>&emsp;
+	    					<h:inputText></h:inputText>&emsp;
+	    					<h:commandLink styleClass="btn btn-info">
+	    						<i class="fas fa-search"></i> Rechercher
+	    					</h:commandLink>
+    					</h:form>
+    				</div>
+    			</div>
   			</div>
 		</div>
 	</div>
