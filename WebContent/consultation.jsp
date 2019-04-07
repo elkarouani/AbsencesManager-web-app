@@ -5,16 +5,33 @@
 <html>
 <head>
 <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1256">
 <title>Consultation</title>
 </head>
 <body>
 <f:view>
-	<div class="card">
-  		<div class="card-body">
-    		This is some text within a card body.
-  		</div>
+	<div class="container">
+		<div class="card">
+			<div class="card-header">
+				<h:form>
+					<h3 class="float-left">Gestions des absences</h3>
+					<span class="float-right">
+						<h:commandLink styleClass="btn btn-primary">
+							<i class="fas fa-plus"></i> nouvelle absence
+						</h:commandLink>
+					</span>
+				</h:form>
+			</div>
+  			<div class="card-body">
+    			This is some text within a card body.
+  			</div>
+		</div>
 	</div>
 </f:view>
+<script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
+<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="assets/js/jquery.js"></script>
+<script type="text/javascript" src="assets/js/popper.js"></script>
 </body>
 </html>
