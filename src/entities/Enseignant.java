@@ -1,19 +1,20 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="etudiant")
-public class Etudiant implements Serializable{
+@Table(name="enseignant")
+public class Enseignant implements Serializable{
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
@@ -22,13 +23,15 @@ public class Etudiant implements Serializable{
 	
 	private String prenom;
 	
+	private boolean is_chef;
+	
 	private String telephone;
 	
-	private Date date_naissance;
-	
 	private String email;
-	
-	private String numero_inscription;
+
+	@ManyToOne
+	@JoinColumn(name="id_module", table="enseignant", referencedColumnName="id")
+	private Module module;
 
 	public long getId() {
 		return id;
@@ -54,20 +57,20 @@ public class Etudiant implements Serializable{
 		this.prenom = prenom;
 	}
 
+	public boolean isIs_chef() {
+		return is_chef;
+	}
+
+	public void setIs_chef(boolean is_chef) {
+		this.is_chef = is_chef;
+	}
+
 	public String getTelephone() {
 		return telephone;
 	}
 
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
-	}
-
-	public Date getDate_naissance() {
-		return date_naissance;
-	}
-
-	public void setDate_naissance(Date date_naissance) {
-		this.date_naissance = date_naissance;
 	}
 
 	public String getEmail() {
@@ -78,11 +81,11 @@ public class Etudiant implements Serializable{
 		this.email = email;
 	}
 
-	public String getNumero_inscription() {
-		return numero_inscription;
+	public Module getModule() {
+		return module;
 	}
 
-	public void setNumero_inscription(String numero_inscription) {
-		this.numero_inscription = numero_inscription;
+	public void setModule(Module module) {
+		this.module = module;
 	}
 }
