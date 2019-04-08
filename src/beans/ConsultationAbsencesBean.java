@@ -18,26 +18,23 @@ import entities.Seance;
 @RequestScoped
 public class ConsultationAbsencesBean {
 	private AbsencesManagerDAO dao; 
-	
+
 	private String student_name;
-	
-	{
-		dao = new AbsencesManagerDAO();
-	}
+	private boolean studentNotFound;
 	
 	@PostConstruct
 	public void init(){
-		
+		dao = new AbsencesManagerDAO();
+		studentNotFound = false;
 	}
 	
 	public void findStudent(ActionEvent event){
-		List<Etudiant> etudiants = dao.getAllEtudiants();
-		for(Etudiant etudiant : etudiants){
-			if (etudiant.getNom().indexOf(student_name) != -1) {
-				
-			} else {
-				System.out.println("not founded");
-			}
+		Etudiant etudiant = new Etudiant();
+		etudiant.setNom(student_name);
+		if (!dao.findEtudiantByNom(etudiant)) {
+			studentNotFound = true;
+		} else {
+			
 		}
 	}
 
@@ -47,6 +44,14 @@ public class ConsultationAbsencesBean {
 
 	public void setStudent_name(String student_name) {
 		this.student_name = student_name;
+	}
+
+	public boolean isStudentNotFound() {
+		return studentNotFound;
+	}
+
+	public void setStudentNotFound(boolean studentNotFound) {
+		this.studentNotFound = studentNotFound;
 	}
 	
 //	public void print(ActionEvent event){

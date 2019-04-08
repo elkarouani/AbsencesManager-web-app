@@ -23,48 +23,16 @@ public class AbsencesManagerDAO {
 		System.out.println("entity manager initialized");
 	}
 	
-	public List<Etudiant> getAllEtudiants(){
+	public boolean findEtudiantByNom(Etudiant etudiant){
 		try {
-			return em.createQuery("SELECT e FROM Etudiant e", Etudiant.class).getResultList();
+			if(em.find(Etudiant.class, etudiant.getId()) != null){
+				return true;
+			} else {
+				return false;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	public List<Module> getAllModules(){
-		try {
-			return em.createQuery("SELECT m FROM Module m", Module.class).getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	public List<Enseignant> getAllEnseignants(){
-		try {
-			return em.createQuery("SELECT e FROM Enseignant e", Enseignant.class).getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	public List<Salle> getAllSalles(){
-		try {
-			return em.createQuery("SELECT s FROM Salle s", Salle.class).getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	public List<Seance> getAllSeances(){
-		try {
-			return em.createQuery("SELECT s FROM Seance s", Seance.class).getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+			return false;
 		}
 	}
 	

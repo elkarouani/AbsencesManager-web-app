@@ -12,6 +12,11 @@
 <body>
 <f:view>
 	<div class="container" style="margin-top: 25px;">
+		<h:panelGroup rendered="#{consultation.studentNotFound}">
+			<div class="alert alert-warning text-center" role="alert">
+  				l'étudiant n'est pas existe
+			</div>
+		</h:panelGroup>
 		<div class="card">
 			<div class="card-header">
 				<h:form>
