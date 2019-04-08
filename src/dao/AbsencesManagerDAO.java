@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import entities.Enseignant;
 import entities.Etudiant;
 import entities.Module;
+import entities.Salle;
 
 public class AbsencesManagerDAO {
 	@PersistenceContext(unitName="AbsencesManager")
@@ -42,6 +43,15 @@ public class AbsencesManagerDAO {
 	public List<Enseignant> getAllEnseignants(){
 		try {
 			return em.createQuery("SELECT e FROM Enseignant e", Enseignant.class).getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Salle> getAllSalles(){
+		try {
+			return em.createQuery("SELECT s FROM Salle s", Salle.class).getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

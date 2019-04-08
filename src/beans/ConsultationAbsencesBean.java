@@ -11,6 +11,7 @@ import dao.AbsencesManagerDAO;
 import entities.Enseignant;
 import entities.Etudiant;
 import entities.Module;
+import entities.Salle;
 
 @ManagedBean(name="consultation")
 @RequestScoped
@@ -40,14 +41,9 @@ public class ConsultationAbsencesBean {
 	}
 	
 	public void read(ActionEvent event){
-		List<Enseignant> enseignants = dao.getAllEnseignants();
-		for(Enseignant enseignant: enseignants){
-			System.out.println(enseignant.getEmail());
-			System.out.println(enseignant.getId());
-			System.out.println(enseignant.getNom());
-			System.out.println(enseignant.getPrenom());
-			System.out.println(enseignant.getTelephone());
-			System.out.println(enseignant.getModule().getLibelle());
+		List<Salle> salles = dao.getAllSalles();
+		for(Salle salle: salles){
+			System.out.println(salle.getLibelle());
 		}
 	}
 
