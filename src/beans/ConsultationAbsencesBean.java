@@ -17,7 +17,7 @@ import entities.Seance;
 @ManagedBean(name="consultation")
 @RequestScoped
 public class ConsultationAbsencesBean {
-	private AbsencesManagerDAO dao;
+	private AbsencesManagerDAO dao; 
 	
 	private String student_name;
 	
@@ -34,21 +34,10 @@ public class ConsultationAbsencesBean {
 		List<Etudiant> etudiants = dao.getAllEtudiants();
 		for(Etudiant etudiant : etudiants){
 			if (etudiant.getNom().indexOf(student_name) != -1) {
-				System.out.println("founded");
+				
 			} else {
 				System.out.println("not founded");
 			}
-		}
-	}
-	
-	public void read(ActionEvent event){
-		List<Seance> seances = dao.getAllSeances();
-		for(Seance seance: seances){
-			System.out.println(seance.getId());
-			System.out.println(seance.getDate_horaire());
-			System.out.println(seance.getEnseignant().getPrenom());
-			System.out.println(seance.getModule().getLibelle());
-			System.out.println(seance.getSalle().getLibelle());
 		}
 	}
 
