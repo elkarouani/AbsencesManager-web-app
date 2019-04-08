@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="module")
-public class module implements Serializable {
+public class Module implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id

@@ -32,6 +32,7 @@
 	    					<h:commandLink styleClass="btn btn-info" actionListener="#{consultation.findStudent}">
 	    						<i class="fas fa-search"></i> Rechercher
 	    					</h:commandLink>
+	    					<h:commandButton value="click" actionListener="#{consultation.read}"></h:commandButton>
     					</h:form>
     				</div>
     			</div>

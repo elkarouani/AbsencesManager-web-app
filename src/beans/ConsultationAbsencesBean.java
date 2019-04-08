@@ -9,6 +9,7 @@ import javax.faces.event.ActionEvent;
 
 import dao.AbsencesManagerDAO;
 import entities.Etudiant;
+import entities.Module;
 
 @ManagedBean(name="consultation")
 @RequestScoped
@@ -34,6 +35,13 @@ public class ConsultationAbsencesBean {
 			} else {
 				System.out.println("not founded");
 			}
+		}
+	}
+	
+	public void read(ActionEvent event){
+		List<Module> modules = dao.getAllModules();
+		for(Module module: modules){
+			System.out.println(module.getLibelle());
 		}
 	}
 

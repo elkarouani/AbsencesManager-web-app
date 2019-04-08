@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 
 import entities.Etudiant;
+import entities.Module;
 
 public class AbsencesManagerDAO {
 	@PersistenceContext(unitName="AbsencesManager")
@@ -29,15 +30,13 @@ public class AbsencesManagerDAO {
 		}
 	}
 	
-	public void printAllEtudiantsList(){
+	public List<Module> getAllModules(){
 		try {
-			List<Etudiant> etudiants =  em.createQuery("SELECT e FROM Etudiant e", Etudiant.class).getResultList();
-			for(Etudiant etudiant : etudiants){
-				System.out.println(etudiant.getNom());
-			}
+			return em.createQuery("SELECT m FROM Module m", Module.class).getResultList();
 		} catch (Exception e) {
 //			e.printStackTrace();
 			System.out.println("error");
+			return null;
 		}
 	}
 	
