@@ -8,8 +8,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 
-
-//import entities.Absence;
+import entities.Etudiant;
 
 public class AbsencesManagerDAO {
 	@PersistenceContext(unitName="AbsencesManager")
@@ -18,6 +17,15 @@ public class AbsencesManagerDAO {
 	public AbsencesManagerDAO (){
 		em = (EntityManager) ((HttpSession) FacesContext.getCurrentInstance()
 				.getExternalContext().getSession(true)).getAttribute("entitymanager");
+	}
+	
+	public List<Etudiant> getAllEtudiants(){
+		try {
+			return em.createQuery("SELECT e FROM Etudiant e", Etudiant.class).getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 //	public String addAbsence(Absence absence){

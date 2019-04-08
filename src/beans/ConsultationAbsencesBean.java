@@ -1,29 +1,15 @@
 package beans;
 
-//import java.io.FileOutputStream;
-//import java.util.List;
-//import java.util.Map;
-
 import javax.annotation.PostConstruct;
-//import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-//import javax.faces.context.FacesContext;
-//import javax.faces.event.ActionEvent;
-
-//import com.itextpdf.text.Document;
-//import com.itextpdf.text.Phrase;
-//import com.itextpdf.text.Rectangle;
-//import com.itextpdf.text.pdf.PdfPCell;
-//import com.itextpdf.text.pdf.PdfPTable;
-//import com.itextpdf.text.pdf.PdfWriter;
+import javax.faces.event.ActionEvent;
 
 import dao.AbsencesManagerDAO;
-//import entities.Absence;
 
 @ManagedBean(name="manager")
 @RequestScoped
-public class BeansManager {
+public class ConsultationAbsencesBean {
 	private AbsencesManagerDAO dao;
 	
 	@PostConstruct
@@ -31,6 +17,9 @@ public class BeansManager {
 		
 	}
 	
+	public void findStudent(ActionEvent event){
+		
+	}
 //	public void print(ActionEvent event){
 //		try {
 //			Document document = new Document();

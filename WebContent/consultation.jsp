@@ -29,7 +29,7 @@
     					<h:form>
     						<h:outputLabel value="étudiant : "></h:outputLabel>&emsp;
 	    					<h:inputText></h:inputText>&emsp;
-	    					<h:commandLink styleClass="btn btn-info">
+	    					<h:commandLink styleClass="btn btn-info" actionListener="#{}">
 	    						<i class="fas fa-search"></i> Rechercher
 	    					</h:commandLink>
     					</h:form>
