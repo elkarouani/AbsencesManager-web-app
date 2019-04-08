@@ -30,7 +30,7 @@ public class Enseignant implements Serializable{
 	private String email;
 
 	@ManyToOne
-	@JoinColumn(name="id_module", table="enseignant", referencedColumnName="id")
+	@JoinColumn(name="id_module", referencedColumnName="id")
 	private Module module;
 
 	public long getId() {

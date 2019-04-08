@@ -11,6 +11,7 @@ import entities.Enseignant;
 import entities.Etudiant;
 import entities.Module;
 import entities.Salle;
+import entities.Seance;
 
 public class AbsencesManagerDAO {
 	@PersistenceContext(unitName="AbsencesManager")
@@ -52,6 +53,15 @@ public class AbsencesManagerDAO {
 	public List<Salle> getAllSalles(){
 		try {
 			return em.createQuery("SELECT s FROM Salle s", Salle.class).getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Seance> getAllSeances(){
+		try {
+			return em.createQuery("SELECT s FROM Seance s", Seance.class).getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

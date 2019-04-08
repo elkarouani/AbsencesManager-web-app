@@ -21,17 +21,17 @@ public class Seance implements Serializable{
 	private long id;
 	
 	@ManyToOne
-	@JoinColumn(name="id_module", table="Seance", referencedColumnName="id")
+	@JoinColumn(name="id_module", referencedColumnName="id")
 	private Module module;
 	
 	private Date date_horaire;
 	
 	@ManyToOne
-	@JoinColumn(name="id_prof", table="Seance", referencedColumnName="id")
+	@JoinColumn(name="id_prof", referencedColumnName="id")
 	private Enseignant enseignant;
 	
 	@ManyToOne
-	@JoinColumn(name="id_salle", table="Seance", referencedColumnName="id")
+	@JoinColumn(name="id_salle", referencedColumnName="id")
 	private Salle salle;
 
 	public long getId() {
