@@ -1,16 +1,25 @@
 package beans;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.event.ActionEvent;
 
 import dao.AbsencesManagerDAO;
+import entities.Etudiant;
 
-@ManagedBean(name="manager")
+@ManagedBean(name="consultation")
 @RequestScoped
 public class ConsultationAbsencesBean {
 	private AbsencesManagerDAO dao;
+	
+	private String student_name;
+	
+	{
+		dao = new AbsencesManagerDAO();
+	}
 	
 	@PostConstruct
 	public void init(){
@@ -18,8 +27,24 @@ public class ConsultationAbsencesBean {
 	}
 	
 	public void findStudent(ActionEvent event){
-		
+		List<Etudiant> etudiants = dao.getAllEtudiants();
+		for(Etudiant etudiant : etudiants){
+			if (etudiant.getNom().indexOf(student_name) != -1) {
+				System.out.println("founded");
+			} else {
+				System.out.println("not founded");
+			}
+		}
 	}
+
+	public String getStudent_name() {
+		return student_name;
+	}
+
+	public void setStudent_name(String student_name) {
+		this.student_name = student_name;
+	}
+	
 //	public void print(ActionEvent event){
 //		try {
 //			Document document = new Document();

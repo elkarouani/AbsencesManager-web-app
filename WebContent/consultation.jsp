@@ -28,8 +28,8 @@
     				<div class="col">
     					<h:form>
     						<h:outputLabel value="étudiant : "></h:outputLabel>&emsp;
-	    					<h:inputText></h:inputText>&emsp;
-	    					<h:commandLink styleClass="btn btn-info" actionListener="#{}">
+	    					<h:inputText value="#{consultation.student_name}"></h:inputText>&emsp;
+	    					<h:commandLink styleClass="btn btn-info" actionListener="#{consultation.findStudent}">
 	    						<i class="fas fa-search"></i> Rechercher
 	    					</h:commandLink>
     					</h:form>

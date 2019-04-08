@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 
@@ -17,14 +16,28 @@ public class AbsencesManagerDAO {
 	public AbsencesManagerDAO (){
 		em = (EntityManager) ((HttpSession) FacesContext.getCurrentInstance()
 				.getExternalContext().getSession(true)).getAttribute("entitymanager");
+		System.out.println("entity manager initialized");
 	}
 	
 	public List<Etudiant> getAllEtudiants(){
 		try {
 			return em.createQuery("SELECT e FROM Etudiant e", Etudiant.class).getResultList();
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("error");
 			return null;
+		}
+	}
+	
+	public void printAllEtudiantsList(){
+		try {
+			List<Etudiant> etudiants =  em.createQuery("SELECT e FROM Etudiant e", Etudiant.class).getResultList();
+			for(Etudiant etudiant : etudiants){
+				System.out.println(etudiant.getNom());
+			}
+		} catch (Exception e) {
+//			e.printStackTrace();
+			System.out.println("error");
 		}
 	}
 	
