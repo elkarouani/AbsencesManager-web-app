@@ -11,7 +11,7 @@
 </head>
 <body>
 <f:view>
-	<div class="container">
+	<div class="container" style="margin-top: 25px;">
 		<div class="card">
 			<div class="card-header">
 				<h:form>
@@ -31,6 +31,45 @@
 	    					<h:inputText></h:inputText>&emsp;
 	    					<h:commandLink styleClass="btn btn-info">
 	    						<i class="fas fa-search"></i> Rechercher
+	    					</h:commandLink>
+    					</h:form>
+    				</div>
+    			</div>
+    			<div class="row">
+    				<div class="col">
+						<h:form>
+							<h:dataTable styleClass="table">
+								<h:column>
+									<f:facet name="header">Date</f:facet>
+									<h:outputText>------</h:outputText>
+								</h:column>						
+								<h:column>
+									<f:facet name="header">Horaire</f:facet>
+									<h:outputText>------</h:outputText>
+								</h:column>
+								<h:column>
+									<f:facet name="header">Seance</f:facet>
+									<h:outputText>------</h:outputText>
+								</h:column>
+								<h:column>
+									<f:facet name="header">Remarque</f:facet>
+									<h:outputText>------</h:outputText>
+								</h:column>
+								<h:column>
+									<f:facet name="header">Actions</f:facet>
+									<h:outputText>------</h:outputText>
+								</h:column>
+							</h:dataTable>
+						</h:form>
+    				</div>
+    			</div>
+    			<div class="row">
+    				<div class="col">
+    					<h:form>
+    						<h:outputLabel value="Nombre d'absence total : "></h:outputLabel>&emsp;
+	    					<h:inputText></h:inputText>&emsp;
+	    					<h:commandLink styleClass="btn btn-info">
+	    						<i class="fas fa-print"></i> Imprimer bilan
 	    					</h:commandLink>
     					</h:form>
     				</div>
