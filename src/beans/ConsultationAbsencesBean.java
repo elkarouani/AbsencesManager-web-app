@@ -8,6 +8,7 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.event.ActionEvent;
 
 import dao.AbsencesManagerDAO;
+import entities.Enseignant;
 import entities.Etudiant;
 import entities.Module;
 
@@ -39,9 +40,14 @@ public class ConsultationAbsencesBean {
 	}
 	
 	public void read(ActionEvent event){
-		List<Module> modules = dao.getAllModules();
-		for(Module module: modules){
-			System.out.println(module.getLibelle());
+		List<Enseignant> enseignants = dao.getAllEnseignants();
+		for(Enseignant enseignant: enseignants){
+			System.out.println(enseignant.getEmail());
+			System.out.println(enseignant.getId());
+			System.out.println(enseignant.getNom());
+			System.out.println(enseignant.getPrenom());
+			System.out.println(enseignant.getTelephone());
+			System.out.println(enseignant.getModule().getLibelle());
 		}
 	}
 
