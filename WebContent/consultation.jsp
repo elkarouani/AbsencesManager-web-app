@@ -74,10 +74,12 @@
     			<h:panelGroup rendered="#{consultation.studentNotFound == false}">
 					<div class="row">
 	    				<div class="col">
+    						<h:outputLabel value="Nombre d'absence total : "></h:outputLabel>&emsp;
+	    					<h:outputText value="#{consultation.count}"></h:outputText>&emsp;
+	    				</div>
+	    				<div class="col-2">
 	    					<h:form>
-	    						<h:outputLabel value="Nombre d'absence total : "></h:outputLabel>&emsp;
-		    					<h:outputText></h:outputText>&emsp;
-		    					<h:commandLink styleClass="btn btn-info">
+	    						<h:commandLink styleClass="btn btn-info">
 		    						<i class="fas fa-print"></i> Imprimer bilan
 		    					</h:commandLink>
 	    					</h:form>

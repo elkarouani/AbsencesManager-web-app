@@ -19,10 +19,12 @@ public class ConsultationAbsencesBean {
 	private String student_name;
 	private List<Absence> absences;
 	private boolean studentNotFound;
+	private int count;
 	
 	@PostConstruct
 	public void init(){
 		dao = new AbsencesManagerDAO();
+		count = 0;
 	}
 	
 	public void findStudent(ActionEvent event){
@@ -32,9 +34,10 @@ public class ConsultationAbsencesBean {
 			studentNotFound = false;
 			Etudiant etudiant = dao.findEtudiantByNom(student_name); 
 			absences = dao.getAbsencesByEtudiant(etudiant);
+			for(Absence absence : absences){count++;}
 		}
 	}
-
+	
 	public String getStudent_name() {
 		return student_name;
 	}
@@ -58,7 +61,14 @@ public class ConsultationAbsencesBean {
 	public void setAbsences(List<Absence> absences) {
 		this.absences = absences;
 	}
-	
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
 //	public void print(ActionEvent event){
 //		try {
 //			Document document = new Document();
