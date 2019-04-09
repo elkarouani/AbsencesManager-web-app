@@ -1,15 +1,18 @@
 package beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 
 import dao.AbsencesManagerDAO;
 import entities.Absence;
 import entities.Etudiant;
+import entities.Module;
 
 @ManagedBean(name="consultation")
 @SessionScoped
@@ -19,12 +22,15 @@ public class ConsultationAbsencesBean {
 	private String student_name;
 	private List<Absence> absences;
 	private boolean studentNotFound;
+	private boolean displayTable;
 	private int count;
+	private List<SelectItem> modules;
 	
 	@PostConstruct
 	public void init(){
 		dao = new AbsencesManagerDAO();
 		count = 0;
+		modules = new ArrayList<SelectItem>();
 	}
 	
 	public void findStudent(ActionEvent event){
@@ -32,9 +38,13 @@ public class ConsultationAbsencesBean {
 			studentNotFound = true;
 		} else {
 			studentNotFound = false;
+			displayTable = true;
 			Etudiant etudiant = dao.findEtudiantByNom(student_name); 
 			absences = dao.getAbsencesByEtudiant(etudiant);
 			for(Absence absence : absences){count++;}
+			for(Module module : dao.getAllModules()){
+				modules.add(new SelectItem(module.getLibelle(), module.getLibelle()));
+			}
 		}
 	}
 	
@@ -68,6 +78,22 @@ public class ConsultationAbsencesBean {
 
 	public void setCount(int count) {
 		this.count = count;
+	}
+
+	public List<SelectItem> getModules() {
+		return modules;
+	}
+
+	public void setModules(List<SelectItem> modules) {
+		this.modules = modules;
+	}
+
+	public boolean isDisplayTable() {
+		return displayTable;
+	}
+
+	public void setDisplayTable(boolean displayTable) {
+		this.displayTable = displayTable;
 	}
 //	public void print(ActionEvent event){
 //		try {

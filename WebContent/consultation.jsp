@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=windows-1256" pageEncoding="windows-1256"%>
 <%@ taglib prefix="f"  uri="http://java.sun.com/jsf/core"%>
 <%@ taglib prefix="h"  uri="http://java.sun.com/jsf/html"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -41,36 +42,48 @@
     				</div>
     			</div>
     			<br><br>
-    			<div class="row text-center">
-    				<div class="col">
-						<h:form>
-							<h:dataTable styleClass="table" value="#{consultation.absences}" var="absence">
-								<h:column>
-									<f:facet name="header">Date</f:facet>
-									<h:inputText value="#{absence.seance.date_horaire.date}/#{absence.seance.date_horaire.month + 1}/#{absence.seance.date_horaire.year + 1900}"></h:inputText>
-									
-								</h:column>						
-								<h:column>
-									<f:facet name="header">Horaire</f:facet>
-									<h:inputText value="#{absence.seance.date_horaire.hours}:#{absence.seance.date_horaire.minutes}"></h:inputText>
-								</h:column>
-								<h:column>
-									<f:facet name="header">Seance</f:facet>
-									<h:inputText value="#{absence.seance.module.libelle}"></h:inputText>
-								</h:column>
-								<h:column>
-									<f:facet name="header">Remarque</f:facet>
-									<h:inputText value="#{absence.remarque}"></h:inputText>
-								</h:column>
-								<h:column>
-									<f:facet name="header">Actions</f:facet>
-									<h:commandLink styleClass="btn btn-warning"><i class="fas fa-pen"></i></h:commandLink><br>
-									<h:commandLink styleClass="btn btn-danger"><i class="fas fa-trash"></i></h:commandLink>
-								</h:column>
-							</h:dataTable>
-						</h:form>
-    				</div>
-    			</div>
+    			<h:panelGroup rendered="#{consultation.displayTable == true}">
+    				<div class="row text-center">
+    					<div class="col">
+							<h:form>
+								<h:dataTable styleClass="table" value="#{consultation.absences}" var="absence">
+									<h:column>
+										<f:facet name="header"><h:outputText value="Date"/></f:facet>
+										<h:inputText value="#{absence.seance.date_horaire}">
+											<f:convertDateTime pattern = "dd-MM-yyyy" />
+										</h:inputText>
+									</h:column>						
+									<h:column>
+										<f:facet name="header"><h:outputText value="Horaire"/></f:facet>
+										<h:inputText value="#{absence.seance.date_horaire}">
+											<f:convertDateTime pattern = "HH:mm" />
+										</h:inputText>
+									</h:column>
+									<h:column>
+										<f:facet name="header"><h:outputText value="Seance"/></f:facet>
+										<h:selectOneMenu value="#{absence.seance.module.libelle}">
+											<f:selectItems value="#{consultation.modules}"/>
+										</h:selectOneMenu>
+									</h:column>
+									<h:column>
+										<f:facet name="header"><h:outputText value="Remarque"/></f:facet>
+										<h:selectOneMenu value="#{absence.remarque}">
+											<f:selectItem itemValue = "#{null}" itemLabel = "-----" /> 
+	   										<f:selectItem itemValue = "R" itemLabel = "R" />
+	   										<f:selectItem itemValue = "E" itemLabel = "E" />
+	   										<f:selectItem itemValue = "A" itemLabel = "A" /> 
+										</h:selectOneMenu>
+									</h:column>
+									<h:column>
+										<f:facet name="header"><h:outputText value="Actions"/></f:facet>
+										<h:commandLink styleClass="btn btn-warning"><i class="fas fa-pen"></i></h:commandLink><br>
+										<h:commandLink styleClass="btn btn-danger"><i class="fas fa-trash"></i></h:commandLink>
+									</h:column>
+								</h:dataTable>
+							</h:form>
+	    				</div>
+	    			</div>
+	    		</h:panelGroup>
     			<h:panelGroup rendered="#{consultation.studentNotFound == false}">
 					<div class="row">
 	    				<div class="col">

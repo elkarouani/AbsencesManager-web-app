@@ -8,11 +8,8 @@ import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 
 import entities.Absence;
-import entities.Enseignant;
 import entities.Etudiant;
 import entities.Module;
-import entities.Salle;
-import entities.Seance;
 
 public class AbsencesManagerDAO {
 	@PersistenceContext(unitName="AbsencesManager")
@@ -32,6 +29,15 @@ public class AbsencesManagerDAO {
 			}else{
 				return etudiant;
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Module> getAllModules(){
+		try {
+			return em.createQuery("SELECT m From Module m", Module.class).getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
