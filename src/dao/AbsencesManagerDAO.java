@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 
+import entities.Absence;
 import entities.Enseignant;
 import entities.Etudiant;
 import entities.Module;
@@ -23,16 +24,26 @@ public class AbsencesManagerDAO {
 		System.out.println("entity manager initialized");
 	}
 	
-	public boolean findEtudiantByNom(Etudiant etudiant){
+	public Etudiant findEtudiantByNom(String nom){
 		try {
-			if(em.find(Etudiant.class, etudiant.getId()) != null){
-				return true;
-			} else {
-				return false;
+			Etudiant etudiant = em.createQuery("SELECT e FROM Etudiant e WHERE e.nom = :nom", Etudiant.class).setParameter("nom", nom).getSingleResult();
+			if (etudiant == null) {
+				return null;
+			}else{
+				return etudiant;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return null;
+		}
+	}
+	
+	public List<Absence> getAbsencesByEtudiant(Etudiant etudiant){
+		try {
+			return em.createQuery("SELECT a From Absence a WHERE a.etudiant.id = :id", Absence.class).setParameter("id", etudiant.getId()).getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 	

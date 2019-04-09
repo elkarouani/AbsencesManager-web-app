@@ -4,37 +4,34 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 
 import dao.AbsencesManagerDAO;
-import entities.Enseignant;
+import entities.Absence;
 import entities.Etudiant;
-import entities.Module;
-import entities.Salle;
-import entities.Seance;
 
 @ManagedBean(name="consultation")
-@RequestScoped
+@SessionScoped
 public class ConsultationAbsencesBean {
 	private AbsencesManagerDAO dao; 
 
 	private String student_name;
+	private List<Absence> absences;
 	private boolean studentNotFound;
 	
 	@PostConstruct
 	public void init(){
 		dao = new AbsencesManagerDAO();
-		studentNotFound = false;
 	}
 	
 	public void findStudent(ActionEvent event){
-		Etudiant etudiant = new Etudiant();
-		etudiant.setNom(student_name);
-		if (!dao.findEtudiantByNom(etudiant)) {
+		if (dao.findEtudiantByNom(student_name) == null) {
 			studentNotFound = true;
 		} else {
-			
+			studentNotFound = false;
+			Etudiant etudiant = dao.findEtudiantByNom(student_name); 
+			absences = dao.getAbsencesByEtudiant(etudiant);
 		}
 	}
 
@@ -52,6 +49,14 @@ public class ConsultationAbsencesBean {
 
 	public void setStudentNotFound(boolean studentNotFound) {
 		this.studentNotFound = studentNotFound;
+	}
+
+	public List<Absence> getAbsences() {
+		return absences;
+	}
+
+	public void setAbsences(List<Absence> absences) {
+		this.absences = absences;
 	}
 	
 //	public void print(ActionEvent event){

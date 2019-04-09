@@ -12,7 +12,7 @@
 <body>
 <f:view>
 	<div class="container" style="margin-top: 25px;">
-		<h:panelGroup rendered="#{consultation.studentNotFound}">
+		<h:panelGroup rendered="#{consultation.studentNotFound == true}">
 			<div class="alert alert-warning text-center" role="alert">
   				l'étudiant n'est pas existe
 			</div>
@@ -32,7 +32,7 @@
     			<div class="row">
     				<div class="col">
     					<h:form>
-    						<h:outputLabel value="étudiant : "></h:outputLabel>&emsp;
+    						<h:outputLabel value="Nom d'étudiant : "></h:outputLabel>&emsp;
 	    					<h:inputText value="#{consultation.student_name}"></h:inputText>&emsp;
 	    					<h:commandLink styleClass="btn btn-info" actionListener="#{consultation.findStudent}">
 	    						<i class="fas fa-search"></i> Rechercher
@@ -40,45 +40,50 @@
     					</h:form>
     				</div>
     			</div>
-    			<div class="row">
+    			<br><br>
+    			<div class="row text-center">
     				<div class="col">
 						<h:form>
-							<h:dataTable styleClass="table">
+							<h:dataTable styleClass="table" value="#{consultation.absences}" var="absence">
 								<h:column>
 									<f:facet name="header">Date</f:facet>
-									<h:outputText>------</h:outputText>
+									<h:inputText value="#{absence.seance.date_horaire.date}/#{absence.seance.date_horaire.month + 1}/#{absence.seance.date_horaire.year + 1900}"></h:inputText>
+									
 								</h:column>						
 								<h:column>
 									<f:facet name="header">Horaire</f:facet>
-									<h:outputText>------</h:outputText>
+									<h:inputText value="#{absence.seance.date_horaire.hours}:#{absence.seance.date_horaire.minutes}"></h:inputText>
 								</h:column>
 								<h:column>
 									<f:facet name="header">Seance</f:facet>
-									<h:outputText>------</h:outputText>
+									<h:inputText value="#{absence.seance.module.libelle}"></h:inputText>
 								</h:column>
 								<h:column>
 									<f:facet name="header">Remarque</f:facet>
-									<h:outputText>------</h:outputText>
+									<h:inputText value="#{absence.remarque}"></h:inputText>
 								</h:column>
 								<h:column>
 									<f:facet name="header">Actions</f:facet>
-									<h:outputText>------</h:outputText>
+									<h:commandLink styleClass="btn btn-warning"><i class="fas fa-pen"></i></h:commandLink><br>
+									<h:commandLink styleClass="btn btn-danger"><i class="fas fa-trash"></i></h:commandLink>
 								</h:column>
 							</h:dataTable>
 						</h:form>
     				</div>
     			</div>
-    			<div class="row">
-    				<div class="col">
-    					<h:form>
-    						<h:outputLabel value="Nombre d'absence total : "></h:outputLabel>&emsp;
-	    					<h:inputText></h:inputText>&emsp;
-	    					<h:commandLink styleClass="btn btn-info">
-	    						<i class="fas fa-print"></i> Imprimer bilan
-	    					</h:commandLink>
-    					</h:form>
-    				</div>
-    			</div>
+    			<h:panelGroup rendered="#{consultation.studentNotFound == false}">
+					<div class="row">
+	    				<div class="col">
+	    					<h:form>
+	    						<h:outputLabel value="Nombre d'absence total : "></h:outputLabel>&emsp;
+		    					<h:outputText></h:outputText>&emsp;
+		    					<h:commandLink styleClass="btn btn-info">
+		    						<i class="fas fa-print"></i> Imprimer bilan
+		    					</h:commandLink>
+	    					</h:form>
+	    				</div>
+	    			</div>    			
+    			</h:panelGroup>
   			</div>
 		</div>
 	</div>

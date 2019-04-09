@@ -27,7 +27,7 @@ public class Absence implements Serializable{
 	@JoinColumn(name="id_seance", referencedColumnName="id")
 	private Seance seance;
 	
-	private boolean justification;
+	private String justification;
 	
 	private char remarque;
 	
@@ -59,11 +59,11 @@ public class Absence implements Serializable{
 		this.seance = seance;
 	}
 
-	public boolean isJustification() {
+	public String isJustification() {
 		return justification;
 	}
 
-	public void setJustification(boolean justification) {
+	public void setJustification(String justification) {
 		this.justification = justification;
 	}
 
