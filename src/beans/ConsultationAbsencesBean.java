@@ -2,10 +2,12 @@ package beans;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
@@ -46,6 +48,12 @@ public class ConsultationAbsencesBean {
 				modules.add(new SelectItem(module.getLibelle(), module.getLibelle()));
 			}
 		}
+	}
+	
+	public void modifyAbsence(ActionEvent event){
+		FacesContext context = FacesContext.getCurrentInstance();
+		Map<String, String> params =  context.getExternalContext().getRequestParameterMap();
+		System.out.println(params.get("id"));
 	}
 	
 	public String getStudent_name() {

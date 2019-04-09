@@ -50,7 +50,7 @@
 									<h:column>
 										<f:facet name="header"><h:outputText value="Date"/></f:facet>
 										<h:inputText value="#{absence.seance.date_horaire}">
-											<f:convertDateTime pattern = "dd-MM-yyyy" />
+											<f:convertDateTime pattern = "dd-MM-YYYY" />
 										</h:inputText>
 									</h:column>						
 									<h:column>
@@ -76,7 +76,13 @@
 									</h:column>
 									<h:column>
 										<f:facet name="header"><h:outputText value="Actions"/></f:facet>
-										<h:commandLink styleClass="btn btn-warning"><i class="fas fa-pen"></i></h:commandLink><br>
+										<h:commandLink styleClass="btn btn-warning" actionListener="#{consultation.modifyAbsence}">
+											<i class="fas fa-pen"></i>
+											<f:param name="id" value="#{absence.id}"></f:param>
+											<f:param name="date_horaire" value="#{absence.seance.date_horaire}"></f:param>
+											<f:param name="module" value="#{absence.seance.module.libelle}"></f:param>
+											<f:param name="remarque" value="#{absence.remarque}"></f:param>
+										</h:commandLink><br>
 										<h:commandLink styleClass="btn btn-danger"><i class="fas fa-trash"></i></h:commandLink>
 									</h:column>
 								</h:dataTable>
