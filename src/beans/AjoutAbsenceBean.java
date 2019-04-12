@@ -1,10 +1,14 @@
 package beans;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
@@ -16,7 +20,7 @@ import entities.Etudiant;
 import entities.Seance;
 
 
-@ManagedBean(value="ajoutAbsence")
+@ManagedBean(name="ajoutAbsence")
 @SessionScoped
 
 public class AjoutAbsenceBean {
@@ -31,8 +35,8 @@ public class AjoutAbsenceBean {
 	private char remarque;
 	
 	
-	private List<SelectItem> Etudiant;
-	private List<SelectItem> Seance;
+	private List<SelectItem> etudiants;
+	private List<SelectItem> seances;
 	
 	
 	@PostConstruct
@@ -41,14 +45,15 @@ public class AjoutAbsenceBean {
 		
 		//setEtudiant(new ArrayList<Etudiant>());
 		//setSeance(new ArrayList<Seance>());
-		Etudiant.add(new SelectItem(0, "---------"));
-		Seance.add(new SelectItem(0, "---------"));
-		for(Etudiant etudiant : dao.getEtudiant()) {
-			Etudiant.add(new SelectItem(etudiant.getId(), etudiant.getNom()+" "+etudiant.getPrenom()));
-		}
-		for(Seance seance : dao.getSeance()) {
-			Seance.add(new SelectItem(seance.getId(), seance.getModule().getLibelle()));
-		}
+		
+//		Etudiant.add(new SelectItem(0, "---------"));
+//		Seance.add(new SelectItem(0, "---------"));
+//		for(Etudiant etudiant : dao.getEtudiant()) {
+//			Etudiant.add(new SelectItem(etudiant.getId(), etudiant.getNom()+" "+etudiant.getPrenom()));
+//		}
+//		for(Seance seance : dao.getSeance()) {
+//			Seance.add(new SelectItem(seance.getId(), seance.getModule().getLibelle()));
+//		}
 		
 	}
 	public String addAbsence(Absence absence) {
@@ -63,9 +68,21 @@ public class AjoutAbsenceBean {
 		//System.out.println("Absence ajouté !");
 		return "Absence ajouté!";
 	}
+	
 	public void tester(ActionEvent event) {
-		System.out.println(justification.getName());
+//		System.out.println("File name : " + getFilename(justification));
+		File file = null;
+		for(String cd : justification.getHeader("content-disposition").split(";")) {
+			if(cd.trim().startsWith("filename")) {
+				String filename = cd.substring(cd.indexOf('=')+1).trim().replace("\\","/");
+				filename = filename.substring(1, filename.length()-1);
+				file = new File(filename);
+			}
+		}
+		dao.addFile(file);
+//		System.out.println("New path : " + moveFileToUploads(justification));
 	}
+	
 	public long getId() {
 		return id;
 	}
@@ -96,43 +113,74 @@ public class AjoutAbsenceBean {
 	public void setRemarque(char remarque) {
 		this.remarque = remarque;
 	}
-	public List<SelectItem> getEtudiant() {
-		return Etudiant;
-	}
 
-	public void setEtudiant(List<SelectItem> etudiant) {
-		Etudiant = etudiant;
-	}
-
-
-	public List<SelectItem> getSeance() {
-		return Seance;
-	}
-
-
-	public void setSeance(List<SelectItem> seance) {
-		Seance = seance;
-	}
 	public List<Absence> getAbsences() {
 		return absences;
 	}
 	public void setAbsences(List<Absence> absences) {
 		this.absences = absences;
 	}
-	
-	private static String getFilename(String string) {
-		
-//		for(String cd: string.getHeader("content-disposition").spilt(";")) {
-//			if(cd.trim().startsWith("filename")) {
-//				String filename = cd.substring(cd.indexOf('=')+1).trim().replace("/","");
-//				return filename.substring(filename.lastIndexOf('/')+1).substring(filename.lastIndexOf('\\')+1);
-//			}
-//			
-//		}
-		
+	public List<SelectItem> getEtudiants() {
+		return etudiants;
+	}
+	public void setEtudiants(List<SelectItem> etudiants) {
+		this.etudiants = etudiants;
+	}
+	public List<SelectItem> getSeances() {
+		return seances;
+	}
+	public void setSeances(List<SelectItem> seances) {
+		this.seances = seances;
+	}
+	public String getFilename(Part justification) {
+		for(String cd : justification.getHeader("content-disposition").split(";")) {
+			if(cd.trim().startsWith("filename")) {
+				String filename = cd.substring(cd.indexOf('=')+1).trim().replace("/","");
+				return filename.substring(filename.lastIndexOf('\\')+1, filename.length() - 1);
+			}
+		}
 		return null;
-		
 	}
 	
+	public String moveFileToUploads(Part justification){
+		for(String cd : justification.getHeader("content-disposition").split(";")) {
+			if(cd.trim().startsWith("filename")) {
+				String filename = cd.substring(cd.indexOf('=')+1).trim().replace("\\","/");
+				filename = filename.substring(1, filename.length()-1);
+				File file = new File(filename);
 
+				String extension = file.getName().substring(file.getName().indexOf(".") + 1);
+				String fileName = file.getName().substring(0, file.getName().indexOf("."));
+				
+				String newPath = "C:\\Users\\KDragon\\git\\AbsencesManager-web-app\\WebContent\\uploads\\" + fileName + "_" + (new Date()).getTime() + "." + extension;
+				File newFile = new File(newPath);
+				
+				try {
+					
+					FileInputStream inStream = new FileInputStream(file);
+					FileOutputStream outStream = new FileOutputStream(newFile);
+		        	
+		    	    byte[] buffer = new byte[1024];
+		    		
+		    	    int length;
+		    	    //copy the file content in bytes 
+		    	    while ((length = inStream.read(buffer)) > 0){
+		    	  
+		    	    	outStream.write(buffer, 0, length);
+		    	 
+		    	    }
+		    	 
+		    	    inStream.close();
+		    	    outStream.close();
+		    	    
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+				return newPath;
+			}
+		}
+		return null;
+	}
+	
 }

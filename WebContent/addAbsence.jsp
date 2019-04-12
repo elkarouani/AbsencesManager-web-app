@@ -14,12 +14,12 @@
 <legend>Ajouter Absence</legend>
 <h:outputLabel value="Etudiant"/>
 		<h:selectOneMenu value="#{ajoutAbsence.id_etudiant}">
-		<f:selectItems value="#{ajoutAbsence.Etudiant}"/>
+		<f:selectItems value="#{ajoutAbsence.etudiants}"/>
 		</h:selectOneMenu>
 		<br><br>
 		<h:outputLabel value="Seance"/>
 		<h:selectOneMenu value="#{ajoutAbsence.id_seance}">
-		<f:selectItems value="#{ajoutAbsence.Seance}"/>
+		<f:selectItems value="#{ajoutAbsence.seances}"/>
 		</h:selectOneMenu>
 		<br><br>
 		<h:outputLabel value="Justification"/>
