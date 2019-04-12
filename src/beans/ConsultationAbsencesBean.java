@@ -15,6 +15,7 @@ import dao.AbsencesManagerDAO;
 import entities.Absence;
 import entities.Etudiant;
 import entities.Module;
+import entities.Seance;
 
 @ManagedBean(name="consultation")
 @SessionScoped
@@ -26,14 +27,19 @@ public class ConsultationAbsencesBean {
 	private boolean studentNotFound;
 	private boolean displayTable;
 	private int count;
+	
+	
 	private List<SelectItem> modules;
+	
 	
 	@PostConstruct
 	public void init(){
 		dao = new AbsencesManagerDAO();
 		count = 0;
 		modules = new ArrayList<SelectItem>();
+		
 	}
+	
 	
 	public void findStudent(ActionEvent event){
 		if (dao.findEtudiantByNom(student_name) == null) {
@@ -43,7 +49,7 @@ public class ConsultationAbsencesBean {
 			displayTable = true;
 			Etudiant etudiant = dao.findEtudiantByNom(student_name); 
 			absences = dao.getAbsencesByEtudiant(etudiant);
-			for(Absence absence : absences){count++;}
+			for(@SuppressWarnings("unused") Absence absence : absences){count++;}
 			for(Module module : dao.getAllModules()){
 				modules.add(new SelectItem(module.getLibelle(), module.getLibelle()));
 			}
@@ -103,6 +109,7 @@ public class ConsultationAbsencesBean {
 	public void setDisplayTable(boolean displayTable) {
 		this.displayTable = displayTable;
 	}
+
 //	public void print(ActionEvent event){
 //		try {
 //			Document document = new Document();
@@ -130,4 +137,6 @@ public class ConsultationAbsencesBean {
 //		}
 //		
 //	}
+
+
 }

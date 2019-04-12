@@ -4,12 +4,14 @@ import java.util.List;
 
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 
 import entities.Absence;
 import entities.Etudiant;
 import entities.Module;
+import entities.Seance;
 
 public class AbsencesManagerDAO {
 	@PersistenceContext(unitName="AbsencesManager")
@@ -53,19 +55,35 @@ public class AbsencesManagerDAO {
 		}
 	}
 	
-//	public String addAbsence(Absence absence){
-//		try {
-//			EntityTransaction t = em.getTransaction();
-//			t.begin();
-//			em.persist(absence);
-//			t.commit();
-//			return "well added";
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			e.printStackTrace();
-//			return "error";
-//		}
-//	}
+	public List<Etudiant> getEtudiant(){
+		try {
+			return em.createQuery("SELECT E From Etudiant E", Etudiant.class).getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	public List<Seance> getSeance(){
+		try {
+			return em.createQuery("SELECT S From Etudiant S", Seance.class).getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	public String addAbsence(Absence absence){
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+			em.persist(absence);
+			t.commit();
+			return "well added";
+		} catch (Exception e) {
+		 // TODO: handle exception
+			e.printStackTrace();
+			return "error";
+		}
+	}
 	
 //	public String modifyAbsence(Absence absence){
 //		try {

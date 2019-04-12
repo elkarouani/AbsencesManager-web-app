@@ -9,7 +9,7 @@
 </head>
 <body>
 <f:view>
-
+	<h:outputText value="Great"></h:outputText>
 </f:view>
 </body>
 </html>

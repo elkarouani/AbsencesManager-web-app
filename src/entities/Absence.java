@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="absences")
+@Table(name="absence")
 public class Absence implements Serializable{
 	private static final long serialVersionUID = 1L;
 
@@ -82,4 +82,6 @@ public class Absence implements Serializable{
 	public void setDemandeAbsence(DemandeAbsence demandeAbsence) {
 		this.demandeAbsence = demandeAbsence;
 	}
+
+	
 }
