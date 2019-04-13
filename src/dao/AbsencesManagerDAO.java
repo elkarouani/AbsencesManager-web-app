@@ -16,7 +16,6 @@ import entities.Absence;
 import entities.Etudiant;
 import entities.Module;
 import entities.Seance;
-import entities.Store;
 
 public class AbsencesManagerDAO {
 	@PersistenceContext(unitName="AbsencesManager")
@@ -87,37 +86,6 @@ public class AbsencesManagerDAO {
 		 // TODO: handle exception
 			e.printStackTrace();
 			return "error";
-		}
-	}
-	
-	public boolean addFile(File file){
-		try {
-			EntityTransaction t = em.getTransaction();
-			t.begin();
-			Store store = new Store();
-			
-			// initialize buffered reader  
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String line = null;
-			StringBuffer fileContentStr = new StringBuffer("");
-			byte[] fileContent = null;
-	        // read lines of file
-			while ((line = reader.readLine()) != null) {
-	        //append line to string buffer
-				fileContentStr.append(line).append("\n");
-			}
-	                // convert string to byte array
-			fileContent = fileContentStr.toString().trim().getBytes();
-			
-			store.setData(fileContent);
-			em.persist(store);
-			t.commit();
-			System.out.println("well added");
-			
-			return true;
-		} catch (Exception e) {
-			// TODO: handle exception
-			return false;
 		}
 	}
 	

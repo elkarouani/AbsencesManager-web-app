@@ -3,6 +3,7 @@ package beans;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -70,17 +71,10 @@ public class AjoutAbsenceBean {
 	}
 	
 	public void tester(ActionEvent event) {
-//		System.out.println("File name : " + getFilename(justification));
-		File file = null;
-		for(String cd : justification.getHeader("content-disposition").split(";")) {
-			if(cd.trim().startsWith("filename")) {
-				String filename = cd.substring(cd.indexOf('=')+1).trim().replace("\\","/");
-				filename = filename.substring(1, filename.length()-1);
-				file = new File(filename);
-			}
-		}
-		dao.addFile(file);
-//		System.out.println("New path : " + moveFileToUploads(justification));
+		System.out.println("File name : " + getFilename(justification));
+		String newPath = moveFileToUploads(justification);
+		System.out.println(new File(newPath).exists());
+		System.out.println("New path : " + newPath);
 	}
 	
 	public long getId() {
@@ -145,16 +139,21 @@ public class AjoutAbsenceBean {
 	public String moveFileToUploads(Part justification){
 		for(String cd : justification.getHeader("content-disposition").split(";")) {
 			if(cd.trim().startsWith("filename")) {
+				// Getting imported file
 				String filename = cd.substring(cd.indexOf('=')+1).trim().replace("\\","/");
 				filename = filename.substring(1, filename.length()-1);
 				File file = new File(filename);
-
+				
+				// Getting imported file specifications
 				String extension = file.getName().substring(file.getName().indexOf(".") + 1);
 				String fileName = file.getName().substring(0, file.getName().indexOf("."));
 				
-				String newPath = "C:\\Users\\KDragon\\git\\AbsencesManager-web-app\\WebContent\\uploads\\" + fileName + "_" + (new Date()).getTime() + "." + extension;
+				// Getting the new file
+				URL fileUrl = getClass().getResource("/uploads/");
+				String newPath = fileUrl.getPath().substring(1) + fileName + "_" + (new Date()).getTime() + "." + extension;
 				File newFile = new File(newPath);
 				
+				// Read from the imported file and write it in the new files
 				try {
 					
 					FileInputStream inStream = new FileInputStream(file);
@@ -177,6 +176,8 @@ public class AjoutAbsenceBean {
 					// TODO: handle exception
 					e.printStackTrace();
 				}
+				
+				// Return the new file path
 				return newPath;
 			}
 		}
