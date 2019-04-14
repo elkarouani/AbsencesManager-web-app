@@ -7,6 +7,9 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.UICommand;
+import javax.faces.component.html.HtmlInputText;
+import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
@@ -28,6 +31,10 @@ public class ConsultationAbsencesBean {
 	private boolean displayTable;
 	private int count;
 	
+	private HtmlInputText date;
+	private HtmlInputText enseignant;
+	private HtmlSelectOneMenu seance;
+	private HtmlSelectOneMenu remarque;
 	
 	private List<SelectItem> modules;
 	
@@ -39,7 +46,6 @@ public class ConsultationAbsencesBean {
 		modules = new ArrayList<SelectItem>();
 		
 	}
-	
 	
 	public void findStudent(ActionEvent event){
 		if (dao.findEtudiantByNom(student_name) == null) {
@@ -57,9 +63,12 @@ public class ConsultationAbsencesBean {
 	}
 	
 	public void modifyAbsence(ActionEvent event){
-		FacesContext context = FacesContext.getCurrentInstance();
-		Map<String, String> params =  context.getExternalContext().getRequestParameterMap();
-		System.out.println(params.get("id"));
+		System.out.println(date.getValue().toString());
+		System.out.println(seance.getValue().toString());
+		System.out.println(remarque.getValue().toString());
+	}
+	
+	public void populate(ActionEvent event){
 	}
 	
 	public String getStudent_name() {
@@ -110,6 +119,38 @@ public class ConsultationAbsencesBean {
 		this.displayTable = displayTable;
 	}
 
+	public HtmlInputText getDate() {
+		return date;
+	}
+
+	public void setDate(HtmlInputText date) {
+		this.date = date;
+	}
+
+	public HtmlSelectOneMenu getSeance() {
+		return seance;
+	}
+
+	public void setSeance(HtmlSelectOneMenu seance) {
+		this.seance = seance;
+	}
+
+	public HtmlSelectOneMenu getRemarque() {
+		return remarque;
+	}
+
+	public void setRemarque(HtmlSelectOneMenu remarque) {
+		this.remarque = remarque;
+	}
+
+	public HtmlInputText getEnseignant() {
+		return enseignant;
+	}
+
+	public void setEnseignant(HtmlInputText enseignant) {
+		this.enseignant = enseignant;
+	}
+	
 //	public void print(ActionEvent event){
 //		try {
 //			Document document = new Document();

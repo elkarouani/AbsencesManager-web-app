@@ -49,7 +49,7 @@
 								<h:dataTable styleClass="table" value="#{consultation.absences}" var="absence">
 									<h:column>
 										<f:facet name="header"><h:outputText value="Date"/></f:facet>
-										<h:inputText value="#{absence.seance.date_horaire}">
+										<h:inputText binding="#{consultation.date}" value="#{absence.seance.date_horaire}">
 											<f:convertDateTime pattern = "dd-MM-YYYY" />
 										</h:inputText>
 									</h:column>						
@@ -61,13 +61,17 @@
 									</h:column>
 									<h:column>
 										<f:facet name="header"><h:outputText value="Seance"/></f:facet>
-										<h:selectOneMenu value="#{absence.seance.module.libelle}">
+										<h:selectOneMenu binding="#{consultation.seance}" value="#{absence.seance.module.libelle}">
 											<f:selectItems value="#{consultation.modules}"/>
 										</h:selectOneMenu>
 									</h:column>
 									<h:column>
+										<f:facet name="header"><h:outputText value="Enseignant"/></f:facet>
+										<h:inputText value="#{absence.seance.enseignant.nom} #{absence.seance.enseignant.prenom}"></h:inputText>
+									</h:column>
+									<h:column>
 										<f:facet name="header"><h:outputText value="Remarque"/></f:facet>
-										<h:selectOneMenu value="#{absence.remarque}">
+										<h:selectOneMenu binding="#{consultation.remarque}" value="#{absence.remarque}">
 											<f:selectItem itemValue = "#{null}" itemLabel = "-----" /> 
 	   										<f:selectItem itemValue = "R" itemLabel = "R" />
 	   										<f:selectItem itemValue = "E" itemLabel = "E" />
@@ -76,13 +80,7 @@
 									</h:column>
 									<h:column>
 										<f:facet name="header"><h:outputText value="Actions"/></f:facet>
-										<h:commandLink styleClass="btn btn-warning" actionListener="#{consultation.modifyAbsence}">
-											<i class="fas fa-pen"></i>
-											<f:param name="id" value="#{absence.id}"></f:param>
-											<f:param name="date_horaire" value="#{absence.seance.date_horaire}"></f:param>
-											<f:param name="module" value="#{absence.seance.module.libelle}"></f:param>
-											<f:param name="remarque" value="#{absence.remarque}"></f:param>
-										</h:commandLink><br>
+										<h:commandLink styleClass="btn btn-warning" actionListener="#{consultation.modifyAbsence}" ></h:commandLink><br>
 										<h:commandLink styleClass="btn btn-danger"><i class="fas fa-trash"></i></h:commandLink>
 									</h:column>
 								</h:dataTable>

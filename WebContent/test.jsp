@@ -9,7 +9,11 @@
 </head>
 <body>
 <f:view>
-	<h:outputText value="Great"></h:outputText>
+	<h:form>
+		<h:inputText binding="#{consultation.newTitle}" value="#{consultation.title}"></h:inputText>
+		<h:commandButton value="print" actionListener="#{consultation.populate}"></h:commandButton>
+	</h:form>
+	
 </f:view>
 </body>
 </html>
