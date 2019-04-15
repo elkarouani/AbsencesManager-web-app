@@ -49,29 +49,29 @@
 								<h:dataTable styleClass="table" value="#{consultation.absences}" var="absence">
 									<h:column>
 										<f:facet name="header"><h:outputText value="Date"/></f:facet>
-										<h:inputText binding="#{consultation.date}" value="#{absence.seance.date_horaire}">
+										<h:inputText binding="#{consultation.dateInput}" value="#{absence.seance.date_horaire}" readonly="true">
 											<f:convertDateTime pattern = "dd-MM-YYYY" />
 										</h:inputText>
 									</h:column>						
 									<h:column>
 										<f:facet name="header"><h:outputText value="Horaire"/></f:facet>
-										<h:inputText value="#{absence.seance.date_horaire}">
+										<h:inputText value="#{absence.seance.date_horaire}" readonly="true">
 											<f:convertDateTime pattern = "HH:mm" />
 										</h:inputText>
 									</h:column>
 									<h:column>
 										<f:facet name="header"><h:outputText value="Seance"/></f:facet>
-										<h:selectOneMenu binding="#{consultation.seance}" value="#{absence.seance.module.libelle}">
-											<f:selectItems value="#{consultation.modules}"/>
+										<h:selectOneMenu value="#{absence.seance.id}">
+											<f:selectItems value="#{consultation.seances}" binding="#{consultation.seanceInput}"/>
 										</h:selectOneMenu>
 									</h:column>
 									<h:column>
 										<f:facet name="header"><h:outputText value="Enseignant"/></f:facet>
-										<h:inputText value="#{absence.seance.enseignant.nom} #{absence.seance.enseignant.prenom}"></h:inputText>
+										<h:inputText value="#{absence.seance.enseignant.nom} #{absence.seance.enseignant.prenom}" readonly="true"></h:inputText>
 									</h:column>
 									<h:column>
 										<f:facet name="header"><h:outputText value="Remarque"/></f:facet>
-										<h:selectOneMenu binding="#{consultation.remarque}" value="#{absence.remarque}">
+										<h:selectOneMenu binding="#{consultation.remarqueInput}" value="#{absence.remarque}">
 											<f:selectItem itemValue = "#{null}" itemLabel = "-----" /> 
 	   										<f:selectItem itemValue = "R" itemLabel = "R" />
 	   										<f:selectItem itemValue = "E" itemLabel = "E" />
@@ -80,8 +80,14 @@
 									</h:column>
 									<h:column>
 										<f:facet name="header"><h:outputText value="Actions"/></f:facet>
-										<h:commandLink styleClass="btn btn-warning" actionListener="#{consultation.modifyAbsence}" ></h:commandLink><br>
-										<h:commandLink styleClass="btn btn-danger"><i class="fas fa-trash"></i></h:commandLink>
+										<h:commandLink styleClass="btn btn-warning" actionListener="#{consultation.modifyAbsence}" onclick="return confirm('Vous voulez vraiment modifier cette observation ?');" >
+											<i class="fas fa-pen"></i>
+											<f:param name="id" value="#{absence.id}"></f:param>
+										</h:commandLink><br>
+										<h:commandLink styleClass="btn btn-danger" actionListener="#{consultation.deleteAbsence}" onclick="return confirm('Vous voulez vraiment supprimer cette observation ?');">
+											<i class="fas fa-trash"></i>
+											<f:param name="id" value="#{absence.id}"></f:param>
+										</h:commandLink>
 									</h:column>
 								</h:dataTable>
 							</h:form>
@@ -107,7 +113,6 @@
 		</div>
 	</div>
 </f:view>
-<script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
 <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="assets/js/jquery.js"></script>
 <script type="text/javascript" src="assets/js/popper.js"></script>

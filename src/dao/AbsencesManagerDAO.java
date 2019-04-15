@@ -59,6 +59,15 @@ public class AbsencesManagerDAO {
 		}
 	}
 	
+	public Absence getAbsenceById(String id){
+		try {
+			return em.createQuery("SELECT a From Absence a WHERE a.id = :id", Absence.class).setParameter("id", new Long(id)).getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public List<Etudiant> getEtudiant(){
 		try {
 			return em.createQuery("SELECT E From Etudiant E", Etudiant.class).getResultList();
@@ -67,9 +76,17 @@ public class AbsencesManagerDAO {
 			return null;
 		}
 	}
-	public List<Seance> getSeance(){
+	public List<Seance> getAllSeances(){
 		try {
-			return em.createQuery("SELECT S From Etudiant S", Seance.class).getResultList();
+			return em.createQuery("SELECT s From Seance s", Seance.class).getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	public Seance getSeanceById(String id){
+		try {
+			return em.createQuery("SELECT s From Seance s WHERE s.id = :id", Seance.class).setParameter("id", new Long(id)).getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -89,41 +106,31 @@ public class AbsencesManagerDAO {
 		}
 	}
 	
-//	public String modifyAbsence(Absence absence){
-//		try {
-//			EntityTransaction t = em.getTransaction();
-//			t.begin();
-//			em.merge(absence);
-//			t.commit();
-//			return "well modified";
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			e.printStackTrace();
-//			return "error";
-//		}
-//	}
+	public String saveAbsence(Absence absence){
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+			em.merge(absence);
+			t.commit();
+			return "well modified";
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return "error";
+		}
+	}
 	
-//	public String deleteAbsence(int id_absence){
-//		try {
-//			EntityTransaction t = em.getTransaction();
-//			t.begin();
-//			em.remove(em.find(Absence.class, id_absence));
-//			t.commit();
-//			return "well deleted";
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			e.printStackTrace();
-//			return "error";
-//		}
-//	}
-	
-//	public List<Absence> getAllAbsences(){
-//		try {
-//			return em.createQuery("SELECT a FROM Absence a", Absence.class).getResultList();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return null;
-//		}
-//	}
-	
+	public String removeAbsence(Absence absence){
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+			em.remove(absence);
+			t.commit();
+			return "well deleted";
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return "error";
+		}
+	}
 }
