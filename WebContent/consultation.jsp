@@ -32,7 +32,7 @@
   			<div class="card-body">
     			<div class="row">
     				<div class="col">
-    					<h:form>
+   						<h:form>
     						<h:outputLabel value="Nom d'étudiant : "></h:outputLabel>&emsp;
 	    					<h:inputText value="#{consultation.student_name}"></h:inputText>&emsp;
 	    					<h:commandLink styleClass="btn btn-info" actionListener="#{consultation.findStudent}">
@@ -40,6 +40,23 @@
 	    					</h:commandLink>
     					</h:form>
     				</div>
+    				<h:panelGroup rendered="#{consultation.displayTable == true}">
+	    				<div class="col-5">
+	    					<h:form>
+	    						<h:outputLabel value="Filtrer par remarque : "></h:outputLabel>&emsp;
+		    					<h:selectOneMenu value="#{consultation.filteredRemarque}">
+									<f:selectItem itemValue = "#{null}" itemLabel = "-----" /> 
+									<f:selectItem itemValue = "R" itemLabel = "R" />
+									<f:selectItem itemValue = "E" itemLabel = "E" />
+									<f:selectItem itemValue = "A" itemLabel = "A" /> 
+								</h:selectOneMenu>
+		    					&emsp;
+		    					<h:commandLink styleClass="btn btn-info" actionListener="#{consultation.filterByRemarque}">
+		    						<i class="fas fa-filter"></i> Filtrer
+		    					</h:commandLink>
+	    					</h:form>
+	    				</div>
+    				</h:panelGroup>
     			</div>
     			<br><br>
     			<h:panelGroup rendered="#{consultation.displayTable == true}">
@@ -61,9 +78,10 @@
 									</h:column>
 									<h:column>
 										<f:facet name="header"><h:outputText value="Seance"/></f:facet>
-										<h:selectOneMenu value="#{absence.seance.id}">
-											<f:selectItems value="#{consultation.seances}" binding="#{consultation.seanceInput}"/>
+										<h:selectOneMenu onchange="changed(this);" value="#{absence.seance.id}">
+											<f:selectItems value="#{consultation.seances}"/>
 										</h:selectOneMenu>
+										<h:inputHidden binding="#{consultation.seanceInput}"></h:inputHidden>
 									</h:column>
 									<h:column>
 										<f:facet name="header"><h:outputText value="Enseignant"/></f:facet>
@@ -113,6 +131,12 @@
 		</div>
 	</div>
 </f:view>
+<script type="text/javascript">
+	function changed(element){
+		element.parentElement.childNodes[1].value = element.value;
+		console.log(element.parentElement.childNodes[1].value);
+	}
+</script>
 <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="assets/js/jquery.js"></script>
 <script type="text/javascript" src="assets/js/popper.js"></script>

@@ -32,10 +32,11 @@ public class ConsultationAbsencesBean {
 	private boolean studentNotFound;
 	private boolean displayTable;
 	private int count;
+	private char filteredRemarque;
 	
 	private HtmlInputText dateInput;
 //	private UISelectItems enseignantInput;
-	private UISelectItems seanceInput;
+	private String seanceInput;
 	private HtmlSelectOneMenu remarqueInput;
 	
 	private List<SelectItem> seances;
@@ -46,7 +47,6 @@ public class ConsultationAbsencesBean {
 		dao = new AbsencesManagerDAO();
 		count = 0;
 		seances = new ArrayList<SelectItem>();
-		
 	}
 	
 	public void findStudent(ActionEvent event){
@@ -65,16 +65,34 @@ public class ConsultationAbsencesBean {
 		}
 	}
 	
+	public void filterByRemarque(ActionEvent event){
+		Etudiant etudiant = dao.findEtudiantByNom(student_name); 
+//		absences = dao.getAbsencesByEtudiant(etudiant);
+		absences.clear();
+		for(Absence absence : dao.getAbsencesByEtudiant(etudiant)){
+			if(absence.getRemarque() == filteredRemarque){
+				System.out.println(absence.getRemarque());
+				absences.add(absence);
+			}
+		}
+		for(Absence absence : absences){count++;}
+		for(Seance seance : dao.getAllSeances()){
+			String seanceString = seance.getModule().getLibelle() + "-" + (seance.getDate_horaire().getDate()) + "/" + (seance.getDate_horaire().getMonth() + 1) + "/" + (seance.getDate_horaire().getYear() + 1900);
+			seances.add(new SelectItem(seance.getId(), seanceString));
+		}
+	}
+	
 	public void modifyAbsence(ActionEvent event){
 		FacesContext context = FacesContext.getCurrentInstance();
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 		Absence absence = dao.getAbsenceById(params.get("id"));
-		System.out.println( ( (ArrayList<SelectItem>)seanceInput.getValue() ).get(0).getValue().toString() );
+		System.out.println(seanceInput);
 //		Seance seance = dao.getSeanceById(seanceInput.getValue().toString());
 //		absence.setSeance(seance);
 //		absence.setRemarque(remarqueInput.getValue().toString().charAt(0));
 //		System.out.println(dao.saveAbsence(absence));
 //		seances = new ArrayList<SelectItem>();
+		count = 0;
 		chargeTable();
 	}
 	
@@ -83,6 +101,7 @@ public class ConsultationAbsencesBean {
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 		Absence absence = dao.getAbsenceById(params.get("id"));
 		System.out.println(dao.removeAbsence(absence));
+		count = 0;
 		chargeTable();
 	}
 	
@@ -160,11 +179,11 @@ public class ConsultationAbsencesBean {
 		return remarqueInput;
 	}
 	
-	public UISelectItems getSeanceInput() {
+	public String getSeanceInput() {
 		return seanceInput;
 	}
 
-	public void setSeanceInput(UISelectItems seanceInput) {
+	public void setSeanceInput(String seanceInput) {
 		this.seanceInput = seanceInput;
 	}
 
@@ -179,6 +198,15 @@ public class ConsultationAbsencesBean {
 	public void setSeances(List<SelectItem> seances) {
 		this.seances = seances;
 	}
+
+	public char getFilteredRemarque() {
+		return filteredRemarque;
+	}
+
+	public void setFilteredRemarque(char filteredRemarque) {
+		this.filteredRemarque = filteredRemarque;
+	}
+	
 	
 //	public void print(ActionEvent event){
 //		try {
