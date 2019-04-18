@@ -12,6 +12,7 @@
 </head>
 <body>
 <f:view>
+	<img src="assets/img/index.png" />
 	<div class="container" style="margin-top: 25px;">
 		<h:panelGroup rendered="#{consultation.studentNotFound == true}">
 			<div class="alert alert-warning text-center" role="alert">

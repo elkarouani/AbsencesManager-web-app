@@ -18,6 +18,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import java.awt.Graphics;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
@@ -228,11 +229,10 @@ public class ConsultationAbsencesBean {
 			PdfWriter.getInstance(document, new FileOutputStream("d:/hello.pdf"));
 			document.open();
 			
-//			ImageData data = ImageDataFactory.create(imageFile);
-			URL fileUrl = getClass().getResource("/uploads/index.png");
-			System.out.println(fileUrl.getPath());
-//			Image img = Image.getInstance(fileUrl.getPath());
-//			document.add(img);
+			URL fileUrl = getClass().getResource("/index.png");
+			String newPath = fileUrl.getPath();
+			Image img = Image.getInstance(newPath);
+			document.add(img);
 			
 			PdfPTable table = new PdfPTable(5);
 			table.setTotalWidth(new float[]{ 80, 80, 80, 80, 80 });
