@@ -44,24 +44,24 @@ public class AjoutAbsenceBean {
 	public void init(){
 		dao = new AbsencesManagerDAO();
 		
-		//setEtudiant(new ArrayList<Etudiant>());
-		//setSeance(new ArrayList<Seance>());
+		etudiants = new ArrayList<SelectItem>();
+		seances = new ArrayList<SelectItem>();
 		
-//		Etudiant.add(new SelectItem(0, "---------"));
-//		Seance.add(new SelectItem(0, "---------"));
-//		for(Etudiant etudiant : dao.getEtudiant()) {
-//			Etudiant.add(new SelectItem(etudiant.getId(), etudiant.getNom()+" "+etudiant.getPrenom()));
-//		}
-//		for(Seance seance : dao.getSeance()) {
-//			Seance.add(new SelectItem(seance.getId(), seance.getModule().getLibelle()));
-//		}
+		etudiants.add(new SelectItem(0, "---------"));
+		seances.add(new SelectItem(0, "---------"));
+		for(Etudiant etudiant : dao.getEtudiant()) {
+			etudiants.add(new SelectItem(etudiant.getId(), etudiant.getNom()+" "+etudiant.getPrenom()));
+		}
+		for(Seance seance : dao.getSeance()) {
+			seances.add(new SelectItem(seance.getId(), seance.getModule().getLibelle()));
+		}
 		
 	}
 	public String addAbsence(Absence absence) {
 		Absence ab = new Absence();
 		ab.setId(id);
-//		ab.setEtudiant(dao.findEtudiant(id_etudiant));
-		//ab.setSeance(id_seance);
+		ab.setEtudiant(dao.findEtudiant(id_etudiant));
+		ab.setSeance(dao.findSeance(id_seance));
 		ab.setRemarque(remarque);
 //		ab.setJustification(justification);
 //		ab.write("D:\\data\\"+getFilename(justification));

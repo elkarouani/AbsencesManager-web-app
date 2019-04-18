@@ -20,13 +20,17 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import java.awt.Graphics;
 
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 
 import dao.AbsencesManagerDAO;
 import entities.Absence;
@@ -102,10 +106,10 @@ public class ConsultationAbsencesBean {
 		FacesContext context = FacesContext.getCurrentInstance();
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 		Absence absence = dao.getAbsenceById(params.get("id"));
-		int id_seance = Integer.parseInt(seanceInput.getValue().toString());
-		String remarque = remarqueInput.getValue().toString();
-		absence.setIdSeance(id_seance);
-		absence.setRemarque(remarque.charAt(0));
+//		int id_seance = Integer.parseInt(seanceInput.getValue().toString());
+//		String remarque = remarqueInput.getValue().toString();
+//		absence.setIdSeance(id_seance);
+//		absence.setRemarque(remarque.charAt(0));
 		System.out.println(dao.saveAbsence(absence));
 		seances = new ArrayList<SelectItem>();
 		count = 0;
@@ -222,6 +226,14 @@ public class ConsultationAbsencesBean {
 		this.filteredRemarque = filteredRemarque;
 	}
 	
+	public PdfPCell getCell(String text, int alignment) {
+        PdfPCell cell = new PdfPCell(new Phrase(text));
+        cell.setPadding(0);
+        cell.setHorizontalAlignment(alignment);
+        cell.setBorder(PdfPCell.NO_BORDER);
+        return cell;
+    }
+	
 //	Impression de fichier pdf
 	public void print(ActionEvent event){
 		try {
@@ -232,12 +244,57 @@ public class ConsultationAbsencesBean {
 			URL fileUrl = getClass().getResource("/index.png");
 			String newPath = fileUrl.getPath();
 			Image img = Image.getInstance(newPath);
+			img.scalePercent(140 * 92 / 300);
 			document.add(img);
+
+			document.add( Chunk.NEWLINE );
+//			document.add(Chunk.TABBING);
+			Font font1 = new Font(Font.FontFamily.HELVETICA  , 18, Font.BOLD);
+			Font font2 = new Font(Font.FontFamily.HELVETICA  , 8, Font.BOLD);
 			
+			Paragraph title = new Paragraph("Relevé d'Absences", font1);
+			title.setAlignment(Paragraph.ALIGN_CENTER);
+	        document.add(title);
+	        document.add( Chunk.NEWLINE );
+	        
+	        Etudiant etudiant = dao.findEtudiantByNom(student_name);
+	        
+	        PdfPTable Line = new PdfPTable(2);
+	        
+	        Line.setWidthPercentage(100);
+	        
+	        Paragraph left = new Paragraph("Code : ", font2);
+	        left.add(Chunk.TABBING);
+	        left.add(etudiant.getNumero_inscription());
+	        PdfPCell cell11 = new PdfPCell(left);
+	        cell11.setPadding(0);
+	        cell11.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+	        cell11.setBorder(PdfPCell.NO_BORDER);
+	        
+	        Line.addCell(cell11);
+	        
+	        Paragraph right = new Paragraph("Niveau/Filiére : ", font2);
+	        right.add(Chunk.TABBING);
+	        right.add("LP-TPW");
+	        PdfPCell cell13 = new PdfPCell(right);
+	        cell13.setPadding(0);
+	        cell13.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+	        cell13.setBorder(PdfPCell.NO_BORDER);
+	        
+	        Line.addCell(cell13);
+	        
+	        document.add(Line);
+	        document.add( Chunk.NEWLINE );
+	        
+	        Paragraph line1 = new Paragraph("Nom et Prénom : ", font2);
+	        line1.add(Chunk.TABBING);
+	        line1.add(etudiant.getNom() + etudiant.getPrenom());
+	        document.add(line1);
+	        document.add( Chunk.NEWLINE );
+	        
 			PdfPTable table = new PdfPTable(5);
 			table.setTotalWidth(new float[]{ 80, 80, 80, 80, 80 });
 			table.setLockedWidth(true);
-			Etudiant etudiant = dao.findEtudiantByNom(student_name); 
 			absences = dao.getAbsencesByEtudiant(etudiant);
 			PdfPCell cell1 = new PdfPCell(new Phrase("Date Absence"));
 			cell1.setFixedHeight(10);
@@ -254,6 +311,11 @@ public class ConsultationAbsencesBean {
 	        PdfPCell cell5 = new PdfPCell(new Phrase("Justifactions"));
 			cell5.setFixedHeight(30);
 	        cell5.setBorder(Rectangle.BOX);
+	        table.addCell(cell1);
+	        table.addCell(cell2);
+	        table.addCell(cell3);
+	        table.addCell(cell4);
+	        table.addCell(cell5);
 			for(Absence absence : absences){
 				PdfPCell newCell1 = new PdfPCell(new Phrase(absence.getSeance().getDate_horaire().getDate() + "/" + (absence.getSeance().getDate_horaire().getMonth() + 1) + "/" + (absence.getSeance().getDate_horaire().getYear() + 1900)));
 				newCell1.setFixedHeight(10);

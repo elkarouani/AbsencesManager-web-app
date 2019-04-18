@@ -111,12 +111,23 @@ public class AbsencesManagerDAO {
 			EntityTransaction t = em.getTransaction();
 			t.begin();
 			em.merge(absence);
+//			em.createQuery("update Absence a set a.idAbsence = :idAbsence where id = :id").setParameter("idAbsence", absence.getIdSeance()).setParameter("id", absence.getId());
 			t.commit();
 			return "well modified";
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 			return "error";
+		}
+	}
+	
+	public Etudiant findEtudiant(long id_etudiant){
+		try {
+			return em.find(Etudiant.class, id_etudiant);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
 		}
 	}
 	
