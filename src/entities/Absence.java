@@ -2,6 +2,8 @@ package entities;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,15 +19,19 @@ public class Absence implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long id;
+	private int id;
+	
+	@Column(name="id_seance")
+	private int idSeance;
+	
+	@ManyToOne
+	@JoinColumn(name="id_seance", nullable=false,referencedColumnName="id", updatable=false, insertable=false)
+	private Seance seance;
+	
 	
 	@ManyToOne
 	@JoinColumn(name="id_etudiant", referencedColumnName="id")
 	private Etudiant etudiant;
-	
-	@ManyToOne
-	@JoinColumn(name="id_seance", referencedColumnName="id")
-	private Seance seance;
 	
 	private String justification;
 	
@@ -35,11 +41,11 @@ public class Absence implements Serializable{
 	@JoinColumn(name="id_demande_absence", referencedColumnName="id")
 	private DemandeAbsence demandeAbsence;
 
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -59,10 +65,10 @@ public class Absence implements Serializable{
 		this.seance = seance;
 	}
 
-	public String isJustification() {
+	public String getJustification() {
 		return justification;
 	}
-
+	
 	public void setJustification(String justification) {
 		this.justification = justification;
 	}
@@ -83,5 +89,11 @@ public class Absence implements Serializable{
 		this.demandeAbsence = demandeAbsence;
 	}
 
-	
+	public int getIdSeance() {
+		return idSeance;
+	}
+
+	public void setIdSeance(int idSeance) {
+		this.idSeance = idSeance;
+	}
 }

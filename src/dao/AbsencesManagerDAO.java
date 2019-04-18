@@ -61,7 +61,7 @@ public class AbsencesManagerDAO {
 	
 	public Absence getAbsenceById(String id){
 		try {
-			return em.createQuery("SELECT a From Absence a WHERE a.id = :id", Absence.class).setParameter("id", new Long(id)).getSingleResult();
+			return em.createQuery("SELECT a From Absence a WHERE a.id = :id order by a.seance.date_horaire", Absence.class).setParameter("id", Integer.parseInt(id)).getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -86,7 +86,7 @@ public class AbsencesManagerDAO {
 	}
 	public Seance getSeanceById(String id){
 		try {
-			return em.createQuery("SELECT s From Seance s WHERE s.id = :id", Seance.class).setParameter("id", new Long(id)).getSingleResult();
+			return em.createQuery("SELECT s From Seance s WHERE s.id = :id", Seance.class).setParameter("id", Integer.parseInt(id)).getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

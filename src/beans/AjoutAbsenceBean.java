@@ -29,7 +29,7 @@ public class AjoutAbsenceBean {
 	private AbsencesManagerDAO dao; 
 	private List<Absence> absences;
 	
-	private long id;
+	private int id;
 	private long id_etudiant = 0;
 	private long id_seance = 0;
 	private Part justification;
@@ -60,7 +60,7 @@ public class AjoutAbsenceBean {
 	public String addAbsence(Absence absence) {
 		Absence ab = new Absence();
 		ab.setId(id);
-		//ab.setEtudiant(id_etudiant);
+//		ab.setEtudiant(dao.findEtudiant(id_etudiant));
 		//ab.setSeance(id_seance);
 		ab.setRemarque(remarque);
 //		ab.setJustification(justification);
@@ -77,10 +77,10 @@ public class AjoutAbsenceBean {
 		System.out.println("New path : " + newPath);
 	}
 	
-	public long getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public long getId_etudiant() {

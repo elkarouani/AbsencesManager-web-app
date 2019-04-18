@@ -69,7 +69,7 @@
 										<h:inputText binding="#{consultation.dateInput}" value="#{absence.seance.date_horaire}" readonly="true">
 											<f:convertDateTime pattern = "dd-MM-YYYY" />
 										</h:inputText>
-									</h:column>						
+									</h:column>
 									<h:column>
 										<f:facet name="header"><h:outputText value="Horaire"/></f:facet>
 										<h:inputText value="#{absence.seance.date_horaire}" readonly="true">
@@ -120,7 +120,7 @@
 	    				</div>
 	    				<div class="col-2">
 	    					<h:form>
-	    						<h:commandLink styleClass="btn btn-info">
+	    						<h:commandLink styleClass="btn btn-info" actionListener="#{consultation.print}">
 		    						<i class="fas fa-print"></i> Imprimer bilan
 		    					</h:commandLink>
 	    					</h:form>

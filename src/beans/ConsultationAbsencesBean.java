@@ -1,5 +1,6 @@
 package beans;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +10,20 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UICommand;
 import javax.faces.component.UISelectItems;
+import javax.faces.component.html.HtmlInputHidden;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import dao.AbsencesManagerDAO;
 import entities.Absence;
@@ -36,7 +45,7 @@ public class ConsultationAbsencesBean {
 	
 	private HtmlInputText dateInput;
 //	private UISelectItems enseignantInput;
-	private String seanceInput;
+	private HtmlInputHidden seanceInput;
 	private HtmlSelectOneMenu remarqueInput;
 	
 	private List<SelectItem> seances;
@@ -49,6 +58,7 @@ public class ConsultationAbsencesBean {
 		seances = new ArrayList<SelectItem>();
 	}
 	
+//	Generation de tables des absences liées au étudiant demandé
 	public void findStudent(ActionEvent event){
 		if (dao.findEtudiantByNom(student_name) == null) {
 			studentNotFound = true;
@@ -65,10 +75,12 @@ public class ConsultationAbsencesBean {
 		}
 	}
 	
+//	Filtrer la table par les remarques (A, E, R, P)
 	public void filterByRemarque(ActionEvent event){
 		Etudiant etudiant = dao.findEtudiantByNom(student_name); 
 //		absences = dao.getAbsencesByEtudiant(etudiant);
 		absences.clear();
+		seances.clear();
 		for(Absence absence : dao.getAbsencesByEtudiant(etudiant)){
 			if(absence.getRemarque() == filteredRemarque){
 				System.out.println(absence.getRemarque());
@@ -82,20 +94,22 @@ public class ConsultationAbsencesBean {
 		}
 	}
 	
+//	Mettre une modification sur une absence
 	public void modifyAbsence(ActionEvent event){
 		FacesContext context = FacesContext.getCurrentInstance();
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 		Absence absence = dao.getAbsenceById(params.get("id"));
-		System.out.println(seanceInput);
-//		Seance seance = dao.getSeanceById(seanceInput.getValue().toString());
-//		absence.setSeance(seance);
-//		absence.setRemarque(remarqueInput.getValue().toString().charAt(0));
-//		System.out.println(dao.saveAbsence(absence));
-//		seances = new ArrayList<SelectItem>();
+		int id_seance = Integer.parseInt(seanceInput.getValue().toString());
+		String remarque = remarqueInput.getValue().toString();
+		absence.setIdSeance(id_seance);
+		absence.setRemarque(remarque.charAt(0));
+		System.out.println(dao.saveAbsence(absence));
+		seances = new ArrayList<SelectItem>();
 		count = 0;
 		chargeTable();
 	}
 	
+//	Supprimer une absence
 	public void deleteAbsence(ActionEvent event){
 		FacesContext context = FacesContext.getCurrentInstance();
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -104,10 +118,8 @@ public class ConsultationAbsencesBean {
 		count = 0;
 		chargeTable();
 	}
-	
-	public void populate(ActionEvent event){
-	}
-	
+
+//	rechargement de table des absences 
 	public void chargeTable(){
 		Etudiant etudiant = dao.findEtudiantByNom(student_name);
 		absences = dao.getAbsencesByEtudiant(etudiant);
@@ -179,11 +191,11 @@ public class ConsultationAbsencesBean {
 		return remarqueInput;
 	}
 	
-	public String getSeanceInput() {
+	public HtmlInputHidden getSeanceInput() {
 		return seanceInput;
 	}
 
-	public void setSeanceInput(String seanceInput) {
+	public void setSeanceInput(HtmlInputHidden seanceInput) {
 		this.seanceInput = seanceInput;
 	}
 
@@ -207,34 +219,66 @@ public class ConsultationAbsencesBean {
 		this.filteredRemarque = filteredRemarque;
 	}
 	
-	
-//	public void print(ActionEvent event){
-//		try {
-//			Document document = new Document();
-//			PdfWriter.getInstance(document, new FileOutputStream("d:/hello.pdf"));
-//			document.open();
-//			
-//			PdfPTable table = new PdfPTable(2);
-//			table.setTotalWidth(new float[]{ 160, 120 });
-//			table.setLockedWidth(true);
-//			for(Absence absence : absencesListe){
-//				PdfPCell cell1 = new PdfPCell(new Phrase("Absence N°" + absence.getId()));
-//				cell1.setFixedHeight(10);
-//		        cell1.setBorder(Rectangle.BOX);
-//		        PdfPCell cell2 = new PdfPCell(new Phrase(absence.getTitle()));
-//				cell2.setFixedHeight(30);
-//		        cell2.setBorder(Rectangle.BOX);
-//		        table.addCell(cell1);
-//		        table.addCell(cell2);
-//			}
-//	        document.add(table);
-//	        document.close();
-//	        FacesContext.getCurrentInstance().addMessage(title, new FacesMessage("document printed"));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		
-//	}
+//	Impression de fichier pdf
+	public void print(ActionEvent event){
+		try {
+			Document document = new Document();
+			PdfWriter.getInstance(document, new FileOutputStream("d:/hello.pdf"));
+			document.open();
+			
+			String imageFile = "assets/img/index.png"; 
+//			ImageData data = ImageDataFactory.create(imageFile);
+			
+			PdfPTable table = new PdfPTable(5);
+			table.setTotalWidth(new float[]{ 80, 80, 80, 80, 80 });
+			table.setLockedWidth(true);
+			Etudiant etudiant = dao.findEtudiantByNom(student_name); 
+			absences = dao.getAbsencesByEtudiant(etudiant);
+			PdfPCell cell1 = new PdfPCell(new Phrase("Date Absence"));
+			cell1.setFixedHeight(10);
+	        cell1.setBorder(Rectangle.BOX);
+	        PdfPCell cell2 = new PdfPCell(new Phrase("Horaire"));
+			cell2.setFixedHeight(30);
+	        cell2.setBorder(Rectangle.BOX);
+	        PdfPCell cell3 = new PdfPCell(new Phrase("Matiére"));
+			cell3.setFixedHeight(30);
+	        cell3.setBorder(Rectangle.BOX);
+	        PdfPCell cell4 = new PdfPCell(new Phrase("Professeur"));
+			cell4.setFixedHeight(30);
+	        cell4.setBorder(Rectangle.BOX);
+	        PdfPCell cell5 = new PdfPCell(new Phrase("Justifactions"));
+			cell5.setFixedHeight(30);
+	        cell5.setBorder(Rectangle.BOX);
+			for(Absence absence : absences){
+				PdfPCell newCell1 = new PdfPCell(new Phrase(absence.getSeance().getDate_horaire().getDate() + "/" + (absence.getSeance().getDate_horaire().getMonth() + 1) + "/" + (absence.getSeance().getDate_horaire().getYear() + 1900)));
+				newCell1.setFixedHeight(10);
+				newCell1.setBorder(Rectangle.BOX);
+		        PdfPCell newCell2 = new PdfPCell(new Phrase(absence.getSeance().getDate_horaire().getHours() + "/" + absence.getSeance().getDate_horaire().getMinutes()));
+		        newCell2.setFixedHeight(30);
+		        newCell2.setBorder(Rectangle.BOX);
+		        PdfPCell newCell3 = new PdfPCell(new Phrase(absence.getSeance().getModule().getLibelle()));
+		        newCell3.setFixedHeight(30);
+		        newCell3.setBorder(Rectangle.BOX);
+		        PdfPCell newCell4 = new PdfPCell(new Phrase(absence.getSeance().getEnseignant().getNom() + " " + absence.getSeance().getEnseignant().getPrenom()));
+		        newCell4.setFixedHeight(30);
+		        newCell4.setBorder(Rectangle.BOX);
+		        PdfPCell newCell5 = new PdfPCell(new Phrase((absence.getJustification() == "non") ? "non justifiée" : "justifiée"));
+		        newCell5.setFixedHeight(30);
+		        newCell5.setBorder(Rectangle.BOX);
+		        table.addCell(newCell1);
+		        table.addCell(newCell2);
+		        table.addCell(newCell3);
+		        table.addCell(newCell4);
+		        table.addCell(newCell5);
+			}
+
+	        document.add(table);
+	        document.close();
+	        System.out.println("well printed");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
 }

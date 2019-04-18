@@ -3,12 +3,15 @@ package entities;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,7 +21,7 @@ public class Seance implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long id;
+	private int id;
 	
 	@ManyToOne
 	@JoinColumn(name="id_module", referencedColumnName="id")
@@ -33,12 +36,12 @@ public class Seance implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="id_salle", referencedColumnName="id")
 	private Salle salle;
-
-	public long getId() {
+	
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
