@@ -20,8 +20,10 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import java.awt.Graphics;
 
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
@@ -248,9 +250,8 @@ public class ConsultationAbsencesBean {
 			document.add(img);
 
 			document.add( Chunk.NEWLINE );
-//			document.add(Chunk.TABBING);
 			Font font1 = new Font(Font.FontFamily.HELVETICA  , 18, Font.BOLD);
-			Font font2 = new Font(Font.FontFamily.HELVETICA  , 8, Font.BOLD);
+			Font font2 = new Font(Font.FontFamily.TIMES_ROMAN  , 12, Font.BOLD);
 			
 			Paragraph title = new Paragraph("Relevé d'Absences", font1);
 			title.setAlignment(Paragraph.ALIGN_CENTER);
@@ -264,8 +265,7 @@ public class ConsultationAbsencesBean {
 	        Line.setWidthPercentage(100);
 	        
 	        Paragraph left = new Paragraph("Code : ", font2);
-	        left.add(Chunk.TABBING);
-	        left.add(etudiant.getNumero_inscription());
+	        left.add(" "+etudiant.getNumero_inscription());
 	        PdfPCell cell11 = new PdfPCell(left);
 	        cell11.setPadding(0);
 	        cell11.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
@@ -274,8 +274,7 @@ public class ConsultationAbsencesBean {
 	        Line.addCell(cell11);
 	        
 	        Paragraph right = new Paragraph("Niveau/Filiére : ", font2);
-	        right.add(Chunk.TABBING);
-	        right.add("LP-TPW");
+	        right.add(" LP-TPW");
 	        PdfPCell cell13 = new PdfPCell(right);
 	        cell13.setPadding(0);
 	        cell13.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
@@ -287,51 +286,97 @@ public class ConsultationAbsencesBean {
 	        document.add( Chunk.NEWLINE );
 	        
 	        Paragraph line1 = new Paragraph("Nom et Prénom : ", font2);
-	        line1.add(Chunk.TABBING);
-	        line1.add(etudiant.getNom() + etudiant.getPrenom());
+	        line1.add(" "+etudiant.getNom() + " " + etudiant.getPrenom());
 	        document.add(line1);
+	        document.add( Chunk.NEWLINE );
+	        document.add( Chunk.NEWLINE );
+	        
+	        int nbrAbsencesJustifie = 0;
+	        int nbrAbsencesNonJustifie = 0;
+	        
+	        for(Absence absence : absences){
+	        	if(absence.getJustification().equals("oui")){nbrAbsencesJustifie++;}
+	        	if(absence.getJustification().equals("non")){nbrAbsencesNonJustifie++;}
+	        }
+	        
+	        Paragraph line2 = new Paragraph("Nombre Total d'absence non justifié : ", font2);
+	        line2.add(" "+nbrAbsencesNonJustifie);
+	        document.add(line2);
+	        document.add( Chunk.NEWLINE );
+	        Paragraph line3 = new Paragraph("Nombre Total d'absence justifié : ", font2);
+	        line3.add(" "+nbrAbsencesJustifie);
+	        document.add(line3);
 	        document.add( Chunk.NEWLINE );
 	        
 			PdfPTable table = new PdfPTable(5);
-			table.setTotalWidth(new float[]{ 80, 80, 80, 80, 80 });
+			table.setTotalWidth(new float[]{ 100, 100, 100, 100, 100 });
 			table.setLockedWidth(true);
 			absences = dao.getAbsencesByEtudiant(etudiant);
-			PdfPCell cell1 = new PdfPCell(new Phrase("Date Absence"));
+			
+			PdfPCell cell1 = new PdfPCell(new Phrase("Date Absence", font2));
 			cell1.setFixedHeight(10);
 	        cell1.setBorder(Rectangle.BOX);
-	        PdfPCell cell2 = new PdfPCell(new Phrase("Horaire"));
+	        cell1.setBackgroundColor(new BaseColor(175, 181, 188));
+	        cell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+	        cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        PdfPCell cell2 = new PdfPCell(new Phrase("Horaire", font2));
 			cell2.setFixedHeight(30);
 	        cell2.setBorder(Rectangle.BOX);
-	        PdfPCell cell3 = new PdfPCell(new Phrase("Matiére"));
+	        cell2.setBackgroundColor(new BaseColor(175, 181, 188));
+	        cell2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+	        cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        PdfPCell cell3 = new PdfPCell(new Phrase("Matiére", font2));
 			cell3.setFixedHeight(30);
 	        cell3.setBorder(Rectangle.BOX);
-	        PdfPCell cell4 = new PdfPCell(new Phrase("Professeur"));
+	        cell3.setBackgroundColor(new BaseColor(175, 181, 188));
+	        cell3.setVerticalAlignment(Element.ALIGN_MIDDLE);
+	        cell3.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        PdfPCell cell4 = new PdfPCell(new Phrase("Professeur", font2));
 			cell4.setFixedHeight(30);
 	        cell4.setBorder(Rectangle.BOX);
-	        PdfPCell cell5 = new PdfPCell(new Phrase("Justifactions"));
+	        cell4.setBackgroundColor(new BaseColor(175, 181, 188));
+	        cell4.setVerticalAlignment(Element.ALIGN_MIDDLE);
+	        cell4.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        PdfPCell cell5 = new PdfPCell(new Phrase("Justifactions", font2));
 			cell5.setFixedHeight(30);
 	        cell5.setBorder(Rectangle.BOX);
+	        cell5.setBackgroundColor(new BaseColor(175, 181, 188));
+	        cell5.setVerticalAlignment(Element.ALIGN_MIDDLE);
+	        cell5.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        
 	        table.addCell(cell1);
 	        table.addCell(cell2);
 	        table.addCell(cell3);
 	        table.addCell(cell4);
 	        table.addCell(cell5);
-			for(Absence absence : absences){
+			
+	        for(Absence absence : absences){
 				PdfPCell newCell1 = new PdfPCell(new Phrase(absence.getSeance().getDate_horaire().getDate() + "/" + (absence.getSeance().getDate_horaire().getMonth() + 1) + "/" + (absence.getSeance().getDate_horaire().getYear() + 1900)));
 				newCell1.setFixedHeight(10);
 				newCell1.setBorder(Rectangle.BOX);
+				newCell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				newCell1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		        PdfPCell newCell2 = new PdfPCell(new Phrase(absence.getSeance().getDate_horaire().getHours() + "/" + absence.getSeance().getDate_horaire().getMinutes()));
 		        newCell2.setFixedHeight(30);
 		        newCell2.setBorder(Rectangle.BOX);
+		        newCell2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		        newCell2.setHorizontalAlignment(Element.ALIGN_CENTER);
 		        PdfPCell newCell3 = new PdfPCell(new Phrase(absence.getSeance().getModule().getLibelle()));
 		        newCell3.setFixedHeight(30);
 		        newCell3.setBorder(Rectangle.BOX);
+		        newCell3.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		        newCell3.setHorizontalAlignment(Element.ALIGN_CENTER);
 		        PdfPCell newCell4 = new PdfPCell(new Phrase(absence.getSeance().getEnseignant().getNom() + " " + absence.getSeance().getEnseignant().getPrenom()));
 		        newCell4.setFixedHeight(30);
 		        newCell4.setBorder(Rectangle.BOX);
-		        PdfPCell newCell5 = new PdfPCell(new Phrase((absence.getJustification() == "non") ? "non justifiée" : "justifiée"));
+		        newCell4.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		        newCell4.setHorizontalAlignment(Element.ALIGN_CENTER);
+		        PdfPCell newCell5 = new PdfPCell(new Phrase((absence.getJustification().equals("non")) ? "non justifiée" : "justifiée"));
 		        newCell5.setFixedHeight(30);
 		        newCell5.setBorder(Rectangle.BOX);
+		        newCell5.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		        newCell5.setHorizontalAlignment(Element.ALIGN_CENTER);
+		        
 		        table.addCell(newCell1);
 		        table.addCell(newCell2);
 		        table.addCell(newCell3);
