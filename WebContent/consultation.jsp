@@ -11,8 +11,30 @@
 <title>Consultation</title>
 </head>
 <body>
+<div class="navbar navbar-expand-lg navbar-light bg-light">
+<a class="navbar-brand" href="#" style="display: ruby;">
+    <img src="assets/img/index.png" width="40" height="40" class="d-inline-block align-top" alt="" />
+    Gestion d'absence et demande d'absence
+  </a>
+  <div class="collapse navbar-collapse ml-5" id="navbarNav" style="float:right;">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="consultation.jsp">Consulter absence<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="addAbsence.jsp">Ajouter absence <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="addPreAbsence.jsp">Ajouter absence préjustifier <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="notification.jsp">Notification<span class="sr-only">(current)</span></a> 
+      </li>
+
+    </ul>
+  </div>
+</div>
 <f:view>
-	<img src="assets/img/index.png" />
 	<div class="container" style="margin-top: 25px;">
 		<h:panelGroup rendered="#{consultation.studentNotFound == true}">
 			<div class="alert alert-warning text-center" role="alert">
