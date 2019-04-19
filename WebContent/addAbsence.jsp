@@ -39,7 +39,7 @@
 </div>
 <f:view>
 <div class="container" style="margin-top: 25px;">
-		<div class="card">
+		<div class="card text-center">
 			<div class="card-header">
 				<h:form>
 					<h3 class="float-left">Gestions des absences</h3>
@@ -48,28 +48,28 @@
 <div class="card-body">
 	<h:form>
 		<h:outputLabel value="Etudiant :"/>
-		<h:selectOneMenu value="#{ajoutAbsence.id_etudiant}">&nbsp;
+		<h:selectOneMenu styleClass="form-control" value="#{ajoutAbsence.id_etudiant}">&nbsp;
 			<f:selectItems value="#{ajoutAbsence.etudiants}"/>
 		</h:selectOneMenu>
 		<br><br>
 		<h:outputLabel value="Seance :"/>
-		<h:selectOneMenu value="#{ajoutAbsence.id_seance}">&nbsp;
+		<h:selectOneMenu styleClass="form-control" value="#{ajoutAbsence.id_seance}">&nbsp;
 			<f:selectItems value="#{ajoutAbsence.seances}"/>
 		</h:selectOneMenu>
 		<!-- <br><br> -->
 		<%-- <h:outputLabel value="Justification"/>
 		<h:inputFile value="#{ajoutAbsence.justification}" /> --%>
 		<br><br>
-		<h:selectOneRadio value = "#{ajoutAbsence.remarque}"> 
-   			<f:selectItem itemValue = "A" itemLabel = "Absent" /> 
-   			<f:selectItem itemValue = "P" itemLabel = "Présent" />
-   			<f:selectItem itemValue = "E" itemLabel = "Excusée" />
+		<h:selectOneRadio styleClass="form-control" value = "#{ajoutAbsence.remarque}"> 
+   			<f:selectItem itemValue = "A" itemLabel = "Absent" />&nbsp; 
+   			<f:selectItem itemValue = "P" itemLabel = "Présent" />&nbsp;
+   			<f:selectItem itemValue = "E" itemLabel = "Excusée" />&nbsp;
    			<f:selectItem itemValue = "R" itemLabel = "Retard" />
 		</h:selectOneRadio>
 		<br><br> 
-		<h:commandButton value="Enregistrer" actionListener="#{ajoutAbsence.AddAbsence}" />
+		<h:commandButton styleClass="btn btn-primary" value="Enregistrer" actionListener="#{ajoutAbsence.AddAbsence}" />
 		&nbsp;&nbsp;&nbsp;
-		<h:commandButton value="Annuler" actionListener="#{ajoutAbsence.clear}" />		
+		<h:commandButton styleClass="btn btn-secondary" value="Annuler" actionListener="#{ajoutAbsence.clear}" />		
 </h:form>
 </div>
 </div>

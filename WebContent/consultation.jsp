@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="navbar navbar-expand-lg navbar-light bg-light">
-<a class="navbar-brand" href="#" style="display: ruby;">
+<a class="navbar-brand" href="#">
     <img src="assets/img/index.png" width="40" height="40" class="d-inline-block align-top" alt="" />
     Gestion d'absence et demande d'absence
   </a>
@@ -41,7 +41,7 @@
   				l'étudiant n'est pas existe
 			</div>
 		</h:panelGroup>
-		<div class="card">
+		<div class="card text-center">
 			<div class="card-header">
 				<h:form>
 					<h3 class="float-left">Gestions des absences</h3>

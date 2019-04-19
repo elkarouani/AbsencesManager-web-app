@@ -36,7 +36,7 @@
 <f:view>
 	
 	<div class="container" style="margin-top: 25px;">
-		<div class="card">
+		<div class="card text-center">
 			<div class="card-header">
 				<h:form>
 					<h3 class="float-left">Gestions des absences</h3>
@@ -44,28 +44,33 @@
 			</div>
   			<div class="card-body">
 				<h:outputLabel for="StudentsSelection" value="Etudiant : "></h:outputLabel>&nbsp;
-				<h:selectOneMenu id="StudentsSelection">
-					<f:selectItems/>
+				<h:selectOneMenu id="StudentsSelection" value="#{ajoutPreAbsence.id_etudiant}">
+					<f:selectItems value="#{ajoutPreAbsence.etudiants}"/>
 				</h:selectOneMenu>
 				<br>
 				<h:outputLabel for="startDateInput" value="Date / horaire début : "></h:outputLabel>&nbsp;
-				<h:inputText id="startDateInput" title="ex : 18-03-2019"  style="width: 4rem;">
+				<h:inputText id="startDateInput" value="#{ajoutPreAbsence.startDate}" title="ex : 18-03-2019"  style="width: 4rem;">
 					<f:convertDateTime pattern = "dd-MM-YYYY" />
 				</h:inputText>&nbsp;
-				<h:inputText style="width: 4rem;" title="ex : 00:00">
+				<h:inputText style="width: 4rem;" title="ex : 00:00" value="#{ajoutPreAbsence.startTime}">
 					<f:convertDateTime pattern = "HH:mm" />
 				</h:inputText><br>
-				<h:outputLabel for="endDateInput" value="Date / horaire fin: ">
+				<h:outputLabel for="endDateInput" value="Date / horaire fin: "></h:outputLabel>&nbsp;
+				<h:inputText id="endDateInput" title="ex : 18-03-2019" style="width: 4rem;" value="#{ajoutPreAbsence.endDate}">
 					<f:convertDateTime pattern = "dd-MM-YYYY" />
-				</h:outputLabel>&nbsp;
-				<h:inputText id="endDateInput" title="ex : 18-03-2019" style="width: 4rem;">
-					<f:convertDateTime pattern = "HH:mm" />
 				</h:inputText>&nbsp;
-				<h:inputText style="width: 4rem;" title="ex : 00:00"></h:inputText><br>
+				<h:inputText style="width: 4rem;" title="ex : 00:00" value="#{ajoutPreAbsence.endTime}">
+					<f:convertDateTime pattern = "HH:mm" />
+				</h:inputText><br>
+				<h:outputLabel for="acceptation" value="Acceptation : "></h:outputLabel>&nbsp;
+				<h:selectOneMenu id="acceptation" value="#{ajoutPreAbsence.acceptation}">
+					<f:selectItem itemValue="oui" itemLabel="Accéptée"/>
+					<f:selectItem itemValue="non" itemLabel="Non accéptée"/>
+				</h:selectOneMenu><br>
 				<h:outputLabel for="ImportPieceJoint" value="Justification : "></h:outputLabel>&nbsp;
-				<h:inputFile id="ImportPieceJoint" /><br><br>
-				<h:commandButton value="Valider"></h:commandButton>&nbsp;&nbsp;
-				<h:commandButton value="Effacer"></h:commandButton>
+				<h:inputFile id="ImportPieceJoint" value="#{ajoutPreAbsence.justification}" /><br><br>
+				<h:commandButton styleClass="btn btn-primary" value="Valider" actionListener="#{ajoutPreAbsence.AddAbsence}"></h:commandButton>&nbsp;&nbsp;
+				<h:commandButton styleClass="btn btn-secondary" value="Effacer" actionListener="#{ajoutPreAbsence.clear}"></h:commandButton>
   			</div>
 		</div>
 	</div>

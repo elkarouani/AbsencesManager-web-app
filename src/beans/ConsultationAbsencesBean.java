@@ -109,9 +109,9 @@ public class ConsultationAbsencesBean {
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 		Absence absence = dao.getAbsenceById(params.get("id"));
 //		int id_seance = Integer.parseInt(seanceInput.getValue().toString());
-//		String remarque = remarqueInput.getValue().toString();
+		String remarque = remarqueInput.getValue().toString();
 //		absence.setIdSeance(id_seance);
-//		absence.setRemarque(remarque.charAt(0));
+		absence.setRemarque(remarque.charAt(0));
 		System.out.println(dao.saveAbsence(absence));
 		seances = new ArrayList<SelectItem>();
 		count = 0;
