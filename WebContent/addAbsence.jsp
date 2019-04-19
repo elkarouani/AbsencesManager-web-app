@@ -10,31 +10,32 @@
 <body>
 <f:view>
 <h:form enctype="multipart/form-data">
-<fieldset>
-<legend>Ajouter Absence</legend>
-<h:outputLabel value="Etudiant"/>
+	<fieldset>
+		<legend>Ajouter Absence</legend>
+		<h:outputLabel value="Etudiant"/>
 		<h:selectOneMenu value="#{ajoutAbsence.id_etudiant}">
-		<f:selectItems value="#{ajoutAbsence.etudiants}"/>
+			<f:selectItems value="#{ajoutAbsence.etudiants}"/>
 		</h:selectOneMenu>
 		<br><br>
 		<h:outputLabel value="Seance"/>
 		<h:selectOneMenu value="#{ajoutAbsence.id_seance}">
-		<f:selectItems value="#{ajoutAbsence.seances}"/>
+			<f:selectItems value="#{ajoutAbsence.seances}"/>
 		</h:selectOneMenu>
+		<!-- <br><br> -->
+		<%-- <h:outputLabel value="Justification"/>
+		<h:inputFile value="#{ajoutAbsence.justification}" /> --%>
 		<br><br>
-		<h:outputLabel value="Justification"/>
-		<h:inputFile value="#{ajoutAbsence.justification}" />
-		
-		<br><br>
-		<h:commandButton value="Enregistrer" action="#{ajoutAbsence.AddAbsence()}" />
+		<h:selectOneRadio value = "#{ajoutAbsence.remarque}"> 
+   			<f:selectItem itemValue = "A" itemLabel = "Absent" /> 
+   			<f:selectItem itemValue = "P" itemLabel = "Présent" />
+   			<f:selectItem itemValue = "E" itemLabel = "Excusée" />
+   			<f:selectItem itemValue = "R" itemLabel = "Retard" />
+		</h:selectOneRadio>
+		<br><br> 
+		<h:commandButton value="Enregistrer" actionListener="#{ajoutAbsence.AddAbsence}" />
 		&nbsp;&nbsp;&nbsp;
-		<%-- <h:commandButton value="Annuler" action="#{ }" /> --%>
-		<h:commandButton value="tester" actionListener="#{ajoutAbsence.tester}"></h:commandButton>
-</fieldset>		
-</h:form>
-<h:form enctype="multipart/form-data">
-	<h:inputFile value="#{ajoutAbsence.justification}" />
-	<h:commandButton value="tester" actionListener="#{ajoutAbsence.tester}"></h:commandButton>
+		<h:commandButton value="Annuler" actionListener="#{ajoutAbsence.clear}" />
+	</fieldset>		
 </h:form>
 </f:view>
 </body>

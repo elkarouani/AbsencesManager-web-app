@@ -19,13 +19,10 @@ public class Absence implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
-	
-	@Column(name="id_seance")
-	private int idSeance;
+	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name="id_seance", nullable=false,referencedColumnName="id", updatable=false, insertable=false)
+	@JoinColumn(name="id_seance", nullable=false,referencedColumnName="id")
 	private Seance seance;
 	
 	
@@ -40,12 +37,12 @@ public class Absence implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="id_demande_absence", referencedColumnName="id")
 	private DemandeAbsence demandeAbsence;
-
-	public int getId() {
+	
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -87,13 +84,5 @@ public class Absence implements Serializable{
 
 	public void setDemandeAbsence(DemandeAbsence demandeAbsence) {
 		this.demandeAbsence = demandeAbsence;
-	}
-
-	public int getIdSeance() {
-		return idSeance;
-	}
-
-	public void setIdSeance(int idSeance) {
-		this.idSeance = idSeance;
 	}
 }

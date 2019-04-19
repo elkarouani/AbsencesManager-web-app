@@ -17,6 +17,7 @@ import javax.servlet.http.Part;
 
 import dao.AbsencesManagerDAO;
 import entities.Absence;
+import entities.DemandeAbsence;
 import entities.Etudiant;
 import entities.Seance;
 
@@ -30,9 +31,9 @@ public class AjoutAbsenceBean {
 	private List<Absence> absences;
 	
 	private int id;
-	private long id_etudiant = 0;
-	private long id_seance = 0;
-	private Part justification;
+	private int id_etudiant = 0;
+	private int id_seance = 0;
+//	private Part justification;
 	private char remarque;
 	
 	
@@ -57,25 +58,26 @@ public class AjoutAbsenceBean {
 		}
 		
 	}
-	public String addAbsence(Absence absence) {
+	public void AddAbsence(ActionEvent event) {
 		Absence ab = new Absence();
-		ab.setId(id);
 		ab.setEtudiant(dao.findEtudiant(id_etudiant));
 		ab.setSeance(dao.findSeance(id_seance));
 		ab.setRemarque(remarque);
-//		ab.setJustification(justification);
-//		ab.write("D:\\data\\"+getFilename(justification));
-		dao.addAbsence(ab);
-		//System.out.println("Absence ajouté !");
-		return "Absence ajouté!";
+		ab.setJustification((remarque == "E".charAt(0)) ? "oui" : "non");
+		System.out.println(dao.addAbsence(ab));
 	}
 	
-	public void tester(ActionEvent event) {
-		System.out.println("File name : " + getFilename(justification));
-		String newPath = moveFileToUploads(justification);
-		System.out.println(new File(newPath).exists());
-		System.out.println("New path : " + newPath);
+	public void clear(ActionEvent event) {
+		id_etudiant = 0;
+		id_seance = 0;
 	}
+	
+//	public void tester(ActionEvent event) {
+//		System.out.println("File name : " + getFilename(justification));
+//		String newPath = moveFileToUploads(justification);
+//		System.out.println(new File(newPath).exists());
+//		System.out.println("New path : " + newPath);
+//	}
 	
 	public int getId() {
 		return id;
@@ -83,24 +85,24 @@ public class AjoutAbsenceBean {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public long getId_etudiant() {
+	public int getId_etudiant() {
 		return id_etudiant;
 	}
-	public void setId_etudiant(long id_etudiant) {
+	public void setId_etudiant(int id_etudiant) {
 		this.id_etudiant = id_etudiant;
 	}
-	public long getId_seance() {
+	public int getId_seance() {
 		return id_seance;
 	}
-	public void setId_seance(long id_seance) {
+	public void setId_seance(int id_seance) {
 		this.id_seance = id_seance;
 	}
-	public Part getJustification() {
-		return justification;
-	}
-	public void setJustification(Part justification) {
-		this.justification = justification;
-	}
+//	public Part getJustification() {
+//		return justification;
+//	}
+//	public void setJustification(Part justification) {
+//		this.justification = justification;
+//	}
 	public char getRemarque() {
 		return remarque;
 	}
@@ -126,62 +128,62 @@ public class AjoutAbsenceBean {
 	public void setSeances(List<SelectItem> seances) {
 		this.seances = seances;
 	}
-	public String getFilename(Part justification) {
-		for(String cd : justification.getHeader("content-disposition").split(";")) {
-			if(cd.trim().startsWith("filename")) {
-				String filename = cd.substring(cd.indexOf('=')+1).trim().replace("/","");
-				return filename.substring(filename.lastIndexOf('\\')+1, filename.length() - 1);
-			}
-		}
-		return null;
-	}
+//	public String getFilename(Part justification) {
+//		for(String cd : justification.getHeader("content-disposition").split(";")) {
+//			if(cd.trim().startsWith("filename")) {
+//				String filename = cd.substring(cd.indexOf('=')+1).trim().replace("/","");
+//				return filename.substring(filename.lastIndexOf('\\')+1, filename.length() - 1);
+//			}
+//		}
+//		return null;
+//	}
 	
-	public String moveFileToUploads(Part justification){
-		for(String cd : justification.getHeader("content-disposition").split(";")) {
-			if(cd.trim().startsWith("filename")) {
-				// Getting imported file
-				String filename = cd.substring(cd.indexOf('=')+1).trim().replace("\\","/");
-				filename = filename.substring(1, filename.length()-1);
-				File file = new File(filename);
-				
-				// Getting imported file specifications
-				String extension = file.getName().substring(file.getName().indexOf(".") + 1);
-				String fileName = file.getName().substring(0, file.getName().indexOf("."));
-				
-				// Getting the new file
-				URL fileUrl = getClass().getResource("/uploads/");
-				String newPath = fileUrl.getPath().substring(1) + fileName + "_" + (new Date()).getTime() + "." + extension;
-				File newFile = new File(newPath);
-				
-				// Read from the imported file and write it in the new files
-				try {
-					
-					FileInputStream inStream = new FileInputStream(file);
-					FileOutputStream outStream = new FileOutputStream(newFile);
-		        	
-		    	    byte[] buffer = new byte[1024];
-		    		
-		    	    int length;
-		    	    //copy the file content in bytes 
-		    	    while ((length = inStream.read(buffer)) > 0){
-		    	  
-		    	    	outStream.write(buffer, 0, length);
-		    	 
-		    	    }
-		    	 
-		    	    inStream.close();
-		    	    outStream.close();
-		    	    
-				} catch (Exception e) {
-					// TODO: handle exception
-					e.printStackTrace();
-				}
-				
-				// Return the new file path
-				return newPath;
-			}
-		}
-		return null;
-	}
+//	public String moveFileToUploads(Part justification){
+//		for(String cd : justification.getHeader("content-disposition").split(";")) {
+//			if(cd.trim().startsWith("filename")) {
+//				// Getting imported file
+//				String filename = cd.substring(cd.indexOf('=')+1).trim().replace("\\","/");
+//				filename = filename.substring(1, filename.length()-1);
+//				File file = new File(filename);
+//				
+//				// Getting imported file specifications
+//				String extension = file.getName().substring(file.getName().indexOf(".") + 1);
+//				String fileName = file.getName().substring(0, file.getName().indexOf("."));
+//				
+//				// Getting the new file
+//				URL fileUrl = getClass().getResource("/uploads/");
+//				String newPath = fileUrl.getPath().substring(1) + fileName + "_" + (new Date()).getTime() + "." + extension;
+//				File newFile = new File(newPath);
+//				
+//				// Read from the imported file and write it in the new files
+//				try {
+//					
+//					FileInputStream inStream = new FileInputStream(file);
+//					FileOutputStream outStream = new FileOutputStream(newFile);
+//		        	
+//		    	    byte[] buffer = new byte[1024];
+//		    		
+//		    	    int length;
+//		    	    //copy the file content in bytes 
+//		    	    while ((length = inStream.read(buffer)) > 0){
+//		    	  
+//		    	    	outStream.write(buffer, 0, length);
+//		    	 
+//		    	    }
+//		    	 
+//		    	    inStream.close();
+//		    	    outStream.close();
+//		    	    
+//				} catch (Exception e) {
+//					// TODO: handle exception
+//					e.printStackTrace();
+//				}
+//				
+//				// Return the new file path
+//				return newPath;
+//			}
+//		}
+//		return null;
+//	}
 	
 }

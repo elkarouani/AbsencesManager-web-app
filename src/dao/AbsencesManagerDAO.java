@@ -84,6 +84,14 @@ public class AbsencesManagerDAO {
 			return null;
 		}
 	}
+	public List<Seance> getSeance(){
+		try {
+			return em.createQuery("SELECT s From Seance s", Seance.class).getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	public Seance getSeanceById(String id){
 		try {
 			return em.createQuery("SELECT s From Seance s WHERE s.id = :id", Seance.class).setParameter("id", Integer.parseInt(id)).getSingleResult();
@@ -121,9 +129,9 @@ public class AbsencesManagerDAO {
 		}
 	}
 	
-	public Etudiant findEtudiant(long id_etudiant){
+	public Etudiant findEtudiant(int id_etudiant){
 		try {
-			return em.find(Etudiant.class, id_etudiant);
+			return em.find(Etudiant.class, new Long(id_etudiant));
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -131,6 +139,15 @@ public class AbsencesManagerDAO {
 		}
 	}
 	
+	public Seance findSeance(int id_seance){
+		try {
+			return em.find(Seance.class, id_seance);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
+		}
+	}
 	public String removeAbsence(Absence absence){
 		try {
 			EntityTransaction t = em.getTransaction();
