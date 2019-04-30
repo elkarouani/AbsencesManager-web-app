@@ -56,7 +56,6 @@ public class ConsultationAbsencesBean {
 	private HtmlInputHidden seanceInput;
 	private HtmlSelectOneMenu remarqueInput;
 	
-	private List<SelectItem> seances;
 	private List<SelectItem> etudiants;
 	
 	
@@ -64,7 +63,6 @@ public class ConsultationAbsencesBean {
 	public void init(){
 		dao = new AbsencesManagerDAO();
 		count = 0;
-		seances = new ArrayList<SelectItem>();
 		etudiants = new  ArrayList<SelectItem>();
 		
 		etudiants.add(new SelectItem(null, "-----"));
@@ -83,10 +81,6 @@ public class ConsultationAbsencesBean {
 			Etudiant etudiant = dao.findEtudiantByNom(student_name); 
 			absences = dao.getAbsencesByEtudiant(etudiant);
 			for(Absence absence : absences){count++;}
-			for(Seance seance : dao.getAllSeances()){
-				String seanceString = seance.getModule().getLibelle() + "-" + (seance.getDate_horaire().getDate()) + "/" + (seance.getDate_horaire().getMonth() + 1) + "/" + (seance.getDate_horaire().getYear() + 1900);
-				seances.add(new SelectItem(seance.getId(), seanceString));
-			}
 		}
 	}
 	
@@ -95,7 +89,6 @@ public class ConsultationAbsencesBean {
 		Etudiant etudiant = dao.findEtudiantByNom(student_name); 
 //		absences = dao.getAbsencesByEtudiant(etudiant);
 		absences.clear();
-		seances.clear();
 		for(Absence absence : dao.getAbsencesByEtudiant(etudiant)){
 			if(absence.getRemarque() == filteredRemarque){
 				System.out.println(absence.getRemarque());
@@ -103,10 +96,6 @@ public class ConsultationAbsencesBean {
 			}
 		}
 		for(Absence absence : absences){count++;}
-		for(Seance seance : dao.getAllSeances()){
-			String seanceString = seance.getModule().getLibelle() + "-" + (seance.getDate_horaire().getDate()) + "/" + (seance.getDate_horaire().getMonth() + 1) + "/" + (seance.getDate_horaire().getYear() + 1900);
-			seances.add(new SelectItem(seance.getId(), seanceString));
-		}
 	}
 	
 //	Mettre une modification sur une absence
@@ -114,12 +103,9 @@ public class ConsultationAbsencesBean {
 		FacesContext context = FacesContext.getCurrentInstance();
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 		Absence absence = dao.getAbsenceById(params.get("id"));
-//		int id_seance = Integer.parseInt(seanceInput.getValue().toString());
 		String remarque = remarqueInput.getValue().toString();
-//		absence.setIdSeance(id_seance);
 		absence.setRemarque(remarque.charAt(0));
 		System.out.println(dao.saveAbsence(absence));
-		seances = new ArrayList<SelectItem>();
 		count = 0;
 		chargeTable();
 	}
@@ -139,11 +125,6 @@ public class ConsultationAbsencesBean {
 		Etudiant etudiant = dao.findEtudiantByNom(student_name);
 		absences = dao.getAbsencesByEtudiant(etudiant);
 		for(Absence absenceItem : absences){count++;}
-		seances.add(new SelectItem(null, "-------"));
-		for(Seance seance : dao.getAllSeances()){
-			String seanceString = seance.getModule().getLibelle() + "-" + (seance.getDate_horaire().getDate()) + "/" + (seance.getDate_horaire().getMonth() + 1) + "/" + (seance.getDate_horaire().getYear() + 1900);
-			seances.add(new SelectItem(seance.getId(), seanceString));
-		}
 	}
 	
 	public String getStudent_name() {
@@ -216,14 +197,6 @@ public class ConsultationAbsencesBean {
 
 	public void setRemarqueInput(HtmlSelectOneMenu remarqueInput) {
 		this.remarqueInput = remarqueInput;
-	}
-
-	public List<SelectItem> getSeances() {
-		return seances;
-	}
-
-	public void setSeances(List<SelectItem> seances) {
-		this.seances = seances;
 	}
 
 	public char getFilteredRemarque() {

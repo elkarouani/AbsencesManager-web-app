@@ -61,7 +61,7 @@ public class AbsencesManagerDAO {
 	
 	public Absence getAbsenceById(String id){
 		try {
-			return em.createQuery("SELECT a From Absence a WHERE a.id = :id order by a.seance.date_horaire", Absence.class).setParameter("id", Integer.parseInt(id)).getSingleResult();
+			return em.createQuery("SELECT a From Absence a WHERE a.id = :id order by a.seance.date_horaire", Absence.class).setParameter("id", new Long(id)).getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
