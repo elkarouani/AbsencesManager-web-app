@@ -104,10 +104,7 @@
 									</h:column>
 									<h:column>
 										<f:facet name="header"><h:outputText value="Seance"/></f:facet>
-										<h:selectOneMenu onchange="changed(this);" value="#{absence.seance.id}">
-											<f:selectItems value="#{consultation.seances}"/>
-										</h:selectOneMenu>
-										<h:inputHidden binding="#{consultation.seanceInput}"></h:inputHidden>
+										<h:inputText readonly="true" value="#{absence.seance.module.libelle} - #{absence.seance.date_horaire.date} / #{(absence.seance.date_horaire.month + 1)} / #{(absence.seance.date_horaire.year + 1900)}"></h:inputText>
 									</h:column>
 									<h:column>
 										<f:facet name="header"><h:outputText value="Enseignant"/></f:facet>
