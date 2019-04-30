@@ -71,7 +71,7 @@
 	    					<h:form>
 	    						<h:outputLabel value="Filtrer par remarque : "></h:outputLabel>&emsp;
 		    					<h:selectOneMenu value="#{consultation.filteredRemarque}">
-									<f:selectItem itemValue = "#{null}" itemLabel = "-----" /> 
+									<f:selectItem itemValue = "N" itemLabel = "Tout" /> 
 									<f:selectItem itemValue = "R" itemLabel = "R" />
 									<f:selectItem itemValue = "E" itemLabel = "E" />
 									<f:selectItem itemValue = "A" itemLabel = "A" /> 
@@ -147,6 +147,16 @@
 		    						<i class="fas fa-print"></i> Imprimer bilan
 		    					</h:commandLink>
 	    					</h:form>
+	    				</div>
+	    			</div>    			
+    			</h:panelGroup>
+    			<br><br>
+    			<h:panelGroup rendered="#{consultation.document_printed}">
+					<div class="row">
+	    				<div class="col">
+    						<div class="alert alert-success">
+							  le document a été sauvegardé dans votre D://
+							</div>
 	    				</div>
 	    			</div>    			
     			</h:panelGroup>

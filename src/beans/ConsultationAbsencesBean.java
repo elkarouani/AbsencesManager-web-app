@@ -49,6 +49,7 @@ public class ConsultationAbsencesBean {
 	private List<Absence> absences;
 	private boolean studentNotFound;
 	private boolean displayTable;
+	private boolean document_printed;
 	private int count;
 	private char filteredRemarque;
 	
@@ -63,6 +64,7 @@ public class ConsultationAbsencesBean {
 	public void init(){
 		dao = new AbsencesManagerDAO();
 		count = 0;
+		document_printed = false;
 		etudiants = new  ArrayList<SelectItem>();
 		
 		etudiants.add(new SelectItem(null, "-----"));
@@ -89,13 +91,19 @@ public class ConsultationAbsencesBean {
 		Etudiant etudiant = dao.findEtudiantByNom(student_name); 
 //		absences = dao.getAbsencesByEtudiant(etudiant);
 		absences.clear();
-		for(Absence absence : dao.getAbsencesByEtudiant(etudiant)){
-			if(absence.getRemarque() == filteredRemarque){
-				System.out.println(absence.getRemarque());
-				absences.add(absence);
+		count = 0;
+		if(filteredRemarque != "N".charAt(0)){
+			for(Absence absence : dao.getAbsencesByEtudiant(etudiant)){
+				if(absence.getRemarque() == filteredRemarque){
+					System.out.println(absence.getRemarque());
+					absences.add(absence);
+					count++;
+				}
 			}
+		}else{
+			absences = dao.getAbsencesByEtudiant(etudiant);
+			for(Absence absence : absences){count++;}
 		}
-		for(Absence absence : absences){count++;}
 	}
 	
 //	Mettre une modification sur une absence
@@ -174,14 +182,6 @@ public class ConsultationAbsencesBean {
 	public void setDateInput(HtmlInputText dateInput) {
 		this.dateInput = dateInput;
 	}
-
-//	public HtmlInputText getEnseignantInput() {
-//		return enseignantInput;
-//	}
-//
-//	public void setEnseignantInput(HtmlInputText enseignantInput) {
-//		this.enseignantInput = enseignantInput;
-//	}
 	
 	public HtmlSelectOneMenu getRemarqueInput() {
 		return remarqueInput;
@@ -223,11 +223,19 @@ public class ConsultationAbsencesBean {
 		this.etudiants = etudiants;
 	}
 
+	public boolean isDocument_printed() {
+		return document_printed;
+	}
+
+	public void setDocument_printed(boolean document_printed) {
+		this.document_printed = document_printed;
+	}
+
 	//	Impression de fichier pdf
 	public void print(ActionEvent event){
 		try {
 			Document document = new Document();
-			PdfWriter.getInstance(document, new FileOutputStream("d:/hello.pdf"));
+			PdfWriter.getInstance(document, new FileOutputStream("d:/bilan.pdf"));
 			document.open();
 			
 			URL fileUrl = getClass().getResource("/index.png");
@@ -282,8 +290,10 @@ public class ConsultationAbsencesBean {
 	        int nbrAbsencesNonJustifie = 0;
 	        
 	        for(Absence absence : absences){
-	        	if(absence.getJustification().equals("oui")){nbrAbsencesJustifie++;}
-	        	if(absence.getJustification().equals("non")){nbrAbsencesNonJustifie++;}
+	        	if(absence.getRemarque() == "R".charAt(0)){
+	        		if(absence.getJustification().equals("oui")){nbrAbsencesJustifie++;}
+		        	if(absence.getJustification().equals("non")){nbrAbsencesNonJustifie++;}
+	        	}
 	        }
 	        
 	        Paragraph line2 = new Paragraph("Nombre Total d'absence non justifié : ", font2);
@@ -299,6 +309,11 @@ public class ConsultationAbsencesBean {
 			table.setTotalWidth(new float[]{ 100, 100, 100, 100, 100 });
 			table.setLockedWidth(true);
 			absences = dao.getAbsencesByEtudiant(etudiant);
+			for(Absence absence : absences){
+				if(absence.getRemarque() == "R".charAt(0)){
+					absences.remove(absence);
+				}
+			}
 			
 			PdfPCell cell1 = new PdfPCell(new Phrase("Date Absence", font2));
 			cell1.setFixedHeight(10);
@@ -374,8 +389,10 @@ public class ConsultationAbsencesBean {
 	        document.add(table);
 	        document.close();
 	        System.out.println("well printed");
+	        document_printed = true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			document_printed = false;
 		}
 	}
 
