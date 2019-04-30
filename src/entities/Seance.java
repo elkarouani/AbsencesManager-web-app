@@ -21,7 +21,7 @@ public class Seance implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	
 	@ManyToOne
 	@JoinColumn(name="id_module", referencedColumnName="id")
@@ -37,11 +37,11 @@ public class Seance implements Serializable{
 	@JoinColumn(name="id_salle", referencedColumnName="id")
 	private Salle salle;
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

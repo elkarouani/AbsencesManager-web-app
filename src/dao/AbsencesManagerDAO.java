@@ -68,7 +68,7 @@ public class AbsencesManagerDAO {
 		}
 	}
 	
-	public List<Etudiant> getEtudiant(){
+	public List<Etudiant> getAllEtudiants(){
 		try {
 			return em.createQuery("SELECT E From Etudiant E", Etudiant.class).getResultList();
 		} catch (Exception e) {
@@ -84,17 +84,17 @@ public class AbsencesManagerDAO {
 			return null;
 		}
 	}
-	public List<Seance> getSeance(){
+	public List<Absence> getAllAbsences(){
 		try {
-			return em.createQuery("SELECT s From Seance s", Seance.class).getResultList();
+			return em.createQuery("SELECT a From Absence a", Absence.class).getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
-	public Seance getSeanceById(String id){
+	public Seance getSeanceById(long id){
 		try {
-			return em.createQuery("SELECT s From Seance s WHERE s.id = :id", Seance.class).setParameter("id", Integer.parseInt(id)).getSingleResult();
+			return em.createQuery("SELECT s From Seance s WHERE s.id = :id", Seance.class).setParameter("id", id).getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -129,9 +129,9 @@ public class AbsencesManagerDAO {
 		}
 	}
 	
-	public Etudiant findEtudiant(int id_etudiant){
+	public Etudiant findEtudiant(long id_etudiant){
 		try {
-			return em.find(Etudiant.class, new Long(id_etudiant));
+			return em.find(Etudiant.class, id_etudiant);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -139,15 +139,6 @@ public class AbsencesManagerDAO {
 		}
 	}
 	
-	public Seance findSeance(int id_seance){
-		try {
-			return em.find(Seance.class, id_seance);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			return null;
-		}
-	}
 	public String removeAbsence(Absence absence){
 		try {
 			EntityTransaction t = em.getTransaction();

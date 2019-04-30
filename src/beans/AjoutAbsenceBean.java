@@ -1,189 +1,128 @@
 package beans;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.Part;
 
 import dao.AbsencesManagerDAO;
 import entities.Absence;
-import entities.DemandeAbsence;
 import entities.Etudiant;
 import entities.Seance;
 
-
-@ManagedBean(name="ajoutAbsence")
-@SessionScoped
-
+@ManagedBean(name="ajoutv2")
+@ApplicationScoped
 public class AjoutAbsenceBean {
 	
-	private AbsencesManagerDAO dao; 
-	private List<Absence> absences;
+	public AbsencesManagerDAO dao;
 	
-	private int id;
-	private int id_etudiant = 0;
-	private int id_seance = 0;
-//	private Part justification;
-	private char remarque;
+	public long seance_id;
+	public String remarque;
+	public boolean show_table;
 	
-	
-	private List<SelectItem> etudiants;
-	private List<SelectItem> seances;
-	
-	
+	public List<SelectItem> seances;
+	public List<Etudiant> etudiants;
+
 	@PostConstruct
 	public void init(){
+		show_table = false;
 		dao = new AbsencesManagerDAO();
-		
-		etudiants = new ArrayList<SelectItem>();
 		seances = new ArrayList<SelectItem>();
 		
-		etudiants.add(new SelectItem(0, "---------"));
-		seances.add(new SelectItem(0, "---------"));
-		for(Etudiant etudiant : dao.getEtudiant()) {
-			etudiants.add(new SelectItem(etudiant.getId(), etudiant.getNom()+" "+etudiant.getPrenom()));
+		for(Seance seance : dao.getAllSeances()){
+			String libelle = seance.getModule().getLibelle() + " : " + seance.getDate_horaire().getDate() + " / " + (seance.getDate_horaire().getMonth() + 1) + " / " + (seance.getDate_horaire().getYear() + 1900);
+			seances.add(new SelectItem(seance.getId(), libelle));
 		}
-		for(Seance seance : dao.getSeance()) {
-			seances.add(new SelectItem(seance.getId(), seance.getModule().getLibelle()));
+	}
+	
+	public void apply(ActionEvent event){
+		show_table = true;
+		etudiants = new ArrayList<Etudiant>();
+		for(Etudiant etudiant : dao.getAllEtudiants()){
+			boolean etudiantHaveAbsence = false;
+			for(Absence absence : dao.getAllAbsences()){
+				if(absence.getEtudiant().equals(etudiant) && absence.getSeance().equals(dao.getSeanceById(seance_id))){
+					etudiantHaveAbsence = true;
+				}
+			}
+			if(etudiantHaveAbsence == false){
+				etudiants.add(etudiant);
+			}
 		}
+	}
+	
+	public void addAbsence(ActionEvent event){
+		System.out.println("i am here");
+		FacesContext context = FacesContext.getCurrentInstance();
+		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 		
-	}
-	public void AddAbsence(ActionEvent event) {
-		Absence ab = new Absence();
-		ab.setEtudiant(dao.findEtudiant(id_etudiant));
-		ab.setSeance(dao.findSeance(id_seance));
-		ab.setRemarque(remarque);
-		ab.setJustification((remarque == "E".charAt(0)) ? "oui" : "non");
-		System.out.println(dao.addAbsence(ab));
+		Etudiant selectedEtudiant = null;
+		for(Etudiant etudiant : etudiants){
+			if(etudiant.getId() == new Long(params.get("etudiant_id"))){
+				selectedEtudiant = etudiant;
+			}
+		}
+		Seance selectedSeance = null;
+		for(Seance seance : dao.getAllSeances()){
+			if(seance.getId() == seance_id){
+				selectedSeance = seance;
+			}
+		}
+		char remarque = this.remarque.charAt(0);
+		String justification = (remarque == "E".charAt(0)) ? "oui" : "non";
+		
+		Absence absence = new Absence();
+		absence.setEtudiant(selectedEtudiant);
+		absence.setJustification(justification);
+		absence.setRemarque(remarque);
+		absence.setSeance(selectedSeance);
+		
+		System.out.println(dao.addAbsence(absence));
 	}
 	
-	public void clear(ActionEvent event) {
-		id_etudiant = 0;
-		id_seance = 0;
-	}
-	
-//	public void tester(ActionEvent event) {
-//		System.out.println("File name : " + getFilename(justification));
-//		String newPath = moveFileToUploads(justification);
-//		System.out.println(new File(newPath).exists());
-//		System.out.println("New path : " + newPath);
-//	}
-	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public int getId_etudiant() {
-		return id_etudiant;
-	}
-	public void setId_etudiant(int id_etudiant) {
-		this.id_etudiant = id_etudiant;
-	}
-	public int getId_seance() {
-		return id_seance;
-	}
-	public void setId_seance(int id_seance) {
-		this.id_seance = id_seance;
-	}
-//	public Part getJustification() {
-//		return justification;
-//	}
-//	public void setJustification(Part justification) {
-//		this.justification = justification;
-//	}
-	public char getRemarque() {
-		return remarque;
-	}
-	public void setRemarque(char remarque) {
-		this.remarque = remarque;
-	}
-
-	public List<Absence> getAbsences() {
-		return absences;
-	}
-	public void setAbsences(List<Absence> absences) {
-		this.absences = absences;
-	}
-	public List<SelectItem> getEtudiants() {
-		return etudiants;
-	}
-	public void setEtudiants(List<SelectItem> etudiants) {
-		this.etudiants = etudiants;
-	}
 	public List<SelectItem> getSeances() {
 		return seances;
 	}
+
 	public void setSeances(List<SelectItem> seances) {
 		this.seances = seances;
 	}
-//	public String getFilename(Part justification) {
-//		for(String cd : justification.getHeader("content-disposition").split(";")) {
-//			if(cd.trim().startsWith("filename")) {
-//				String filename = cd.substring(cd.indexOf('=')+1).trim().replace("/","");
-//				return filename.substring(filename.lastIndexOf('\\')+1, filename.length() - 1);
-//			}
-//		}
-//		return null;
-//	}
-	
-//	public String moveFileToUploads(Part justification){
-//		for(String cd : justification.getHeader("content-disposition").split(";")) {
-//			if(cd.trim().startsWith("filename")) {
-//				// Getting imported file
-//				String filename = cd.substring(cd.indexOf('=')+1).trim().replace("\\","/");
-//				filename = filename.substring(1, filename.length()-1);
-//				File file = new File(filename);
-//				
-//				// Getting imported file specifications
-//				String extension = file.getName().substring(file.getName().indexOf(".") + 1);
-//				String fileName = file.getName().substring(0, file.getName().indexOf("."));
-//				
-//				// Getting the new file
-//				URL fileUrl = getClass().getResource("/uploads/");
-//				String newPath = fileUrl.getPath().substring(1) + fileName + "_" + (new Date()).getTime() + "." + extension;
-//				File newFile = new File(newPath);
-//				
-//				// Read from the imported file and write it in the new files
-//				try {
-//					
-//					FileInputStream inStream = new FileInputStream(file);
-//					FileOutputStream outStream = new FileOutputStream(newFile);
-//		        	
-//		    	    byte[] buffer = new byte[1024];
-//		    		
-//		    	    int length;
-//		    	    //copy the file content in bytes 
-//		    	    while ((length = inStream.read(buffer)) > 0){
-//		    	  
-//		    	    	outStream.write(buffer, 0, length);
-//		    	 
-//		    	    }
-//		    	 
-//		    	    inStream.close();
-//		    	    outStream.close();
-//		    	    
-//				} catch (Exception e) {
-//					// TODO: handle exception
-//					e.printStackTrace();
-//				}
-//				
-//				// Return the new file path
-//				return newPath;
-//			}
-//		}
-//		return null;
-//	}
-	
+
+	public List<Etudiant> getEtudiants() {
+		return etudiants;
+	}
+
+	public void setEtudiants(List<Etudiant> etudiants) {
+		this.etudiants = etudiants;
+	}
+
+	public String getRemarque() {
+		return remarque;
+	}
+
+	public void setRemarque(String remarque) {
+		this.remarque = remarque;
+	}
+
+	public long getSeance_id() {
+		return seance_id;
+	}
+
+	public void setSeance_id(long seance_id) {
+		this.seance_id = seance_id;
+	}
+
+	public boolean isShow_table() {
+		return show_table;
+	}
+
+	public void setShow_table(boolean show_table) {
+		this.show_table = show_table;
+	}
 }
