@@ -11,18 +11,36 @@
 <title>Ajout d'absence</title>
 </head>
 <body>
+<div class="navbar navbar-expand-lg navbar-light bg-light">
+<a class="navbar-brand" href="#" style="display: contents;">
+    <img src="assets/img/index.png" width="100" height="100" class="d-inline-block align-top" alt="" />
+    Gestion d'absence et demande d'absence
+  </a>
+  <div class="collapse navbar-collapse ml-5" id="navbarNav" style="float:right;">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="consultation.jsp">Consulter absence<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="addAbsence.jsp">Ajouter absence <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="addPreAbsence.jsp">Ajouter absence préjustifier <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+  </div>
+</div>
 <f:view>
-	<img src="assets/img/index.png" />
 	<div class="container" style="margin-top: 25px;">
 		<div class="card">
-			<div class="card-header">
+			<div class="card-header text-center">
 				<h:form>
 					<h3 class="float-left">Ajout des absences</h3>
 				</h:form>
 			</div>
   			<div class="card-body">
 				<div class="row">
-    				<div class="col">
+    				<div class="col d-flex justify-content-center">
    						<h:form>
     						<h:outputLabel value="Séance : "></h:outputLabel>&emsp;
 	    					<h:selectOneMenu value="#{ajoutv2.seance_id}">
@@ -74,12 +92,17 @@
 									</h:column>
 									<h:column>
 										<f:facet name="header"><h:outputText value="Notifications"/></f:facet>
-										<h:outputText value="Ce étudiant était absant 3 seance dans le module JEE"></h:outputText>
+										<h:outputText value="#{ajoutv2.notifications.get(e)}"></h:outputText>
 									</h:column>
 								</h:dataTable>
 							</h:form>
 	    				</div>
 	    			</div>
+	    		</h:panelGroup>
+	    		<h:panelGroup rendered="#{ajoutv2.no_students_exists}">
+	    			<div class="alert alert-info text-center">
+					  Il n'y a pas des étudiants disponibles pour cette seance
+					</div>
 	    		</h:panelGroup>
   			</div>
 		</div><br><br>

@@ -1,6 +1,7 @@
 package beans;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import javax.faces.model.SelectItem;
 import dao.AbsencesManagerDAO;
 import entities.Absence;
 import entities.Etudiant;
+import entities.Module;
 import entities.Seance;
 
 @ManagedBean(name="ajoutv2")
@@ -25,16 +27,20 @@ public class AjoutAbsenceBean {
 	public long seance_id;
 	public String remarque;
 	public boolean show_table;
+	public boolean no_students_exists;
 	
 	public List<SelectItem> seances;
 	public List<Etudiant> etudiants;
+	public Map<Etudiant, String> notifications;
 
 	@PostConstruct
 	public void init(){
 		show_table = false;
+		no_students_exists = false;
 		dao = new AbsencesManagerDAO();
 		seances = new ArrayList<SelectItem>();
 		
+		seances.add(new SelectItem(0, "-----"));
 		for(Seance seance : dao.getAllSeances()){
 			String libelle = seance.getModule().getLibelle() + " : " + seance.getDate_horaire().getDate() + " / " + (seance.getDate_horaire().getMonth() + 1) + " / " + (seance.getDate_horaire().getYear() + 1900);
 			seances.add(new SelectItem(seance.getId(), libelle));
@@ -44,6 +50,8 @@ public class AjoutAbsenceBean {
 	public void apply(ActionEvent event){
 		show_table = true;
 		etudiants = new ArrayList<Etudiant>();
+		notifications = new HashMap<Etudiant, String>();
+		
 		for(Etudiant etudiant : dao.getAllEtudiants()){
 			boolean etudiantHaveAbsence = false;
 			for(Absence absence : dao.getAllAbsences()){
@@ -52,9 +60,44 @@ public class AjoutAbsenceBean {
 				}
 			}
 			if(etudiantHaveAbsence == false){
+				no_students_exists = false;
 				etudiants.add(etudiant);
+				List<Module> modulesHadAbsencesForStudent = getModulesHadAbsencesForStudent(etudiant);
+				if(modulesHadAbsencesForStudent.size() != 0){
+					if(modulesHadAbsencesForStudent.size() == dao.getAllModules().size()){
+						notifications.put(etudiant, "Cet étudiant a trois absences dans tous les modules");
+					} else {
+						String notification = "Cet étudiant passe à trois absences dans les modules : ";
+						for(Module module : modulesHadAbsencesForStudent){
+							notification += module.getLibelle() + ", ";
+						}
+						notifications.put(etudiant, notification.substring(0, notification.length() - 2));
+					}
+				}
 			}
 		}
+		
+		if(etudiants.size() == 0){
+			show_table = false;
+			no_students_exists = true;
+		}
+	}
+	
+	public List<Module> getModulesHadAbsencesForStudent(Etudiant etudiant){
+		List<Module> modulesHadAbsencesForStudent = new ArrayList<Module>();
+		for(Module module : dao.getAllModules()){
+			int countNbrAbsenceForSingleModule = 0;
+			for(Absence absence : dao.getAllAbsences()){
+				if(etudiant.equals(absence.getEtudiant()) && 
+				module.equals(absence.getSeance().getModule())){
+					countNbrAbsenceForSingleModule++;
+				}
+			}
+			if(countNbrAbsenceForSingleModule >= 3){
+				modulesHadAbsencesForStudent.add(module);
+			}
+		}
+		return modulesHadAbsencesForStudent;
 	}
 	
 	public void addAbsence(ActionEvent event){
@@ -84,6 +127,8 @@ public class AjoutAbsenceBean {
 		absence.setSeance(selectedSeance);
 		
 		System.out.println(dao.addAbsence(absence));
+		show_table = false;
+		seance_id = 0;
 	}
 	
 	public List<SelectItem> getSeances() {
@@ -124,5 +169,21 @@ public class AjoutAbsenceBean {
 
 	public void setShow_table(boolean show_table) {
 		this.show_table = show_table;
+	}
+
+	public boolean isNo_students_exists() {
+		return no_students_exists;
+	}
+
+	public void setNo_students_exists(boolean no_students_exists) {
+		this.no_students_exists = no_students_exists;
+	}
+
+	public Map<Etudiant, String> getNotifications() {
+		return notifications;
+	}
+
+	public void setNotifications(Map<Etudiant, String> notifications) {
+		this.notifications = notifications;
 	}
 }
