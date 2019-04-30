@@ -53,11 +53,11 @@ public class ConsultationAbsencesBean {
 	private char filteredRemarque;
 	
 	private HtmlInputText dateInput;
-//	private UISelectItems enseignantInput;
 	private HtmlInputHidden seanceInput;
 	private HtmlSelectOneMenu remarqueInput;
 	
 	private List<SelectItem> seances;
+	private List<SelectItem> etudiants;
 	
 	
 	@PostConstruct
@@ -65,6 +65,12 @@ public class ConsultationAbsencesBean {
 		dao = new AbsencesManagerDAO();
 		count = 0;
 		seances = new ArrayList<SelectItem>();
+		etudiants = new  ArrayList<SelectItem>();
+		
+		etudiants.add(new SelectItem(null, "-----"));
+		for(Etudiant etudiant : dao.getAllEtudiants()){
+			etudiants.add(new SelectItem(etudiant.getNom(), etudiant.getNom() + " " + etudiant.getPrenom()));
+		}
 	}
 	
 //	Generation de tables des absences liées au étudiant demandé
@@ -236,7 +242,15 @@ public class ConsultationAbsencesBean {
         return cell;
     }
 	
-//	Impression de fichier pdf
+	public List<SelectItem> getEtudiants() {
+		return etudiants;
+	}
+
+	public void setEtudiants(List<SelectItem> etudiants) {
+		this.etudiants = etudiants;
+	}
+
+	//	Impression de fichier pdf
 	public void print(ActionEvent event){
 		try {
 			Document document = new Document();

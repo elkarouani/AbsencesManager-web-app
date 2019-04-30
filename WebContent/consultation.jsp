@@ -12,8 +12,8 @@
 </head>
 <body>
 <div class="navbar navbar-expand-lg navbar-light bg-light">
-<a class="navbar-brand" href="#">
-    <img src="assets/img/index.png" width="40" height="40" class="d-inline-block align-top" alt="" />
+<a class="navbar-brand" href="#" style="display: contents;">
+    <img src="assets/img/index.png" width="100" height="100" class="d-inline-block align-top" alt="" />
     Gestion d'absence et demande d'absence
   </a>
   <div class="collapse navbar-collapse ml-5" id="navbarNav" style="float:right;">
@@ -21,7 +21,7 @@
       <li class="nav-item active">
         <a class="nav-link" href="consultation.jsp">Consulter absence<span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="addAbsence.jsp">Ajouter absence <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
@@ -46,9 +46,9 @@
 				<h:form>
 					<h3 class="float-left">Gestions des absences</h3>
 					<span class="float-right">
-						<h:commandLink styleClass="btn btn-primary">
+						<a class="btn btn-primary" href="addAbsence.jsp">
 							<i class="fas fa-plus"></i> nouvelle absence
-						</h:commandLink>
+						</a>
 					</span>
 				</h:form>
 			</div>
@@ -57,9 +57,12 @@
     				<div class="col">
    						<h:form>
     						<h:outputLabel value="Nom d'étudiant : "></h:outputLabel>&emsp;
-	    					<h:inputText value="#{consultation.student_name}"></h:inputText>&emsp;
+	    					<%-- <h:inputText value="#{consultation.student_name}"></h:inputText>&emsp; --%>
+	    					<h:selectOneMenu value="#{consultation.student_name}">
+	    						<f:selectItems value="#{consultation.etudiants}" />
+	    					</h:selectOneMenu>&emsp;
 	    					<h:commandLink styleClass="btn btn-info" actionListener="#{consultation.findStudent}">
-	    						<i class="fas fa-search"></i> Rechercher
+	    						<i class="fas fa-search"></i> Consulter
 	    					</h:commandLink>
     					</h:form>
     				</div>
@@ -137,7 +140,7 @@
 	    		</h:panelGroup>
     			<h:panelGroup rendered="#{consultation.studentNotFound == false}">
 					<div class="row">
-	    				<div class="col">
+	    				<div class="col-8">
     						<h:outputLabel value="Nombre d'absence total : "></h:outputLabel>&emsp;
 	    					<h:outputText value="#{consultation.count}"></h:outputText>&emsp;
 	    				</div>

@@ -18,7 +18,7 @@
   </a>
   <div class="collapse navbar-collapse ml-5" id="navbarNav" style="float:right;">
     <ul class="navbar-nav">
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="consultation.jsp">Consulter absence<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
