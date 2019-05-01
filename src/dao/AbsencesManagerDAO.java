@@ -13,6 +13,7 @@ import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 
 import entities.Absence;
+import entities.DemandeAbsence;
 import entities.Etudiant;
 import entities.Module;
 import entities.Seance;
@@ -105,6 +106,20 @@ public class AbsencesManagerDAO {
 			EntityTransaction t = em.getTransaction();
 			t.begin();
 			em.persist(absence);
+			t.commit();
+			return "well added";
+		} catch (Exception e) {
+		 // TODO: handle exception
+			e.printStackTrace();
+			return "error";
+		}
+	}
+	
+	public String addDemandeAbsence(DemandeAbsence demandeAbsence){
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+			em.persist(demandeAbsence);
 			t.commit();
 			return "well added";
 		} catch (Exception e) {

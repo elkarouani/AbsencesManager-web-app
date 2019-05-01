@@ -113,6 +113,7 @@ public class ConsultationAbsencesBean {
 		Absence absence = dao.getAbsenceById(params.get("id"));
 		String remarque = remarqueInput.getValue().toString();
 		absence.setRemarque(remarque.charAt(0));
+		absence.setJustification(remarque.charAt(0) == "E".charAt(0) ? "oui" : "non"); 
 		System.out.println(dao.saveAbsence(absence));
 		count = 0;
 		chargeTable();
@@ -290,7 +291,7 @@ public class ConsultationAbsencesBean {
 	        int nbrAbsencesNonJustifie = 0;
 	        
 	        for(Absence absence : absences){
-	        	if(absence.getRemarque() == "R".charAt(0)){
+	        	if(absence.getRemarque() == "A".charAt(0) || absence.getRemarque() == "E".charAt(0)){
 	        		if(absence.getJustification().equals("oui")){nbrAbsencesJustifie++;}
 		        	if(absence.getJustification().equals("non")){nbrAbsencesNonJustifie++;}
 	        	}
@@ -373,7 +374,7 @@ public class ConsultationAbsencesBean {
 		        newCell4.setBorder(Rectangle.BOX);
 		        newCell4.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		        newCell4.setHorizontalAlignment(Element.ALIGN_CENTER);
-		        PdfPCell newCell5 = new PdfPCell(new Phrase((absence.getJustification().equals("non")) ? "non justifiée" : "justifiée"));
+		        PdfPCell newCell5 = new PdfPCell(new Phrase((absence.getJustification().equals("non") ? "non justifiée" : "justifiée")));
 		        newCell5.setFixedHeight(30);
 		        newCell5.setBorder(Rectangle.BOX);
 		        newCell5.setVerticalAlignment(Element.ALIGN_MIDDLE);

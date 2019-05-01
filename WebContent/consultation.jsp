@@ -27,10 +27,6 @@
       <li class="nav-item">
         <a class="nav-link" href="addPreAbsence.jsp">Ajouter absence préjustifier <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="notification.jsp">Notification<span class="sr-only">(current)</span></a> 
-      </li>
-
     </ul>
   </div>
 </div>
@@ -41,7 +37,7 @@
   				l'étudiant n'est pas existe
 			</div>
 		</h:panelGroup>
-		<div class="card text-center">
+		<div class="card text-center" style="width: 72rem;">
 			<div class="card-header">
 				<h:form>
 					<h3 class="float-left">Gestions des absences</h3>

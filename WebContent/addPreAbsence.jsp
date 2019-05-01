@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="f"  uri="http://java.sun.com/jsf/core"%>
 <%@ taglib prefix="h"  uri="http://java.sun.com/jsf/html"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!DOCTYPE html>
 <html>
 <head>
 <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
@@ -17,19 +18,15 @@
   </a>
   <div class="collapse navbar-collapse ml-5" id="navbarNav" style="float:right;">
     <ul class="navbar-nav">
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="consultation.jsp">Consulter absence<span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="addAbsence.jsp">Ajouter absence <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link" href="addPreAbsence.jsp">Ajouter absence préjustifier <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="notification.jsp">Notification<span class="sr-only">(current)</span></a> 
-      </li>
-
     </ul>
   </div>
 </div>
@@ -43,34 +40,37 @@
 				</h:form>
 			</div>
   			<div class="card-body">
-				<h:outputLabel for="StudentsSelection" value="Etudiant : "></h:outputLabel>&nbsp;
-				<h:selectOneMenu id="StudentsSelection" value="#{ajoutPreAbsence.id_etudiant}">
-					<f:selectItems value="#{ajoutPreAbsence.etudiants}"/>
-				</h:selectOneMenu>
-				<br>
-				<h:outputLabel for="startDateInput" value="Date / horaire début : "></h:outputLabel>&nbsp;
-				<h:inputText id="startDateInput" value="#{ajoutPreAbsence.startDate}" title="ex : 18-03-2019"  style="width: 4rem;">
-					<f:convertDateTime pattern = "dd-MM-YYYY" />
-				</h:inputText>&nbsp;
-				<h:inputText style="width: 4rem;" title="ex : 00:00" value="#{ajoutPreAbsence.startTime}">
-					<f:convertDateTime pattern = "HH:mm" />
-				</h:inputText><br>
-				<h:outputLabel for="endDateInput" value="Date / horaire fin: "></h:outputLabel>&nbsp;
-				<h:inputText id="endDateInput" title="ex : 18-03-2019" style="width: 4rem;" value="#{ajoutPreAbsence.endDate}">
-					<f:convertDateTime pattern = "dd-MM-YYYY" />
-				</h:inputText>&nbsp;
-				<h:inputText style="width: 4rem;" title="ex : 00:00" value="#{ajoutPreAbsence.endTime}">
-					<f:convertDateTime pattern = "HH:mm" />
-				</h:inputText><br>
-				<h:outputLabel for="acceptation" value="Acceptation : "></h:outputLabel>&nbsp;
-				<h:selectOneMenu id="acceptation" value="#{ajoutPreAbsence.acceptation}">
-					<f:selectItem itemValue="oui" itemLabel="Accéptée"/>
-					<f:selectItem itemValue="non" itemLabel="Non accéptée"/>
-				</h:selectOneMenu><br>
-				<h:outputLabel for="ImportPieceJoint" value="Justification : "></h:outputLabel>&nbsp;
-				<h:inputFile id="ImportPieceJoint" value="#{ajoutPreAbsence.justification}" /><br><br>
-				<h:commandButton styleClass="btn btn-primary" value="Valider" actionListener="#{ajoutPreAbsence.AddAbsence}"></h:commandButton>&nbsp;&nbsp;
-				<h:commandButton styleClass="btn btn-secondary" value="Effacer" actionListener="#{ajoutPreAbsence.clear}"></h:commandButton>
+				<h:form enctype="multipart/form-data">
+					<h:outputLabel for="StudentsSelection" value="Etudiant : "></h:outputLabel>&nbsp;
+					<h:selectOneMenu id="StudentsSelection" value="#{ajoutPreAbsence.id_etudiant}">
+						<f:selectItems value="#{ajoutPreAbsence.etudiants}"/>
+					</h:selectOneMenu>
+					<br>
+					<h:outputLabel for="startDateInput" value="Date / horaire début : "></h:outputLabel>&nbsp;
+					<h:inputText id="startDateInput" value="#{ajoutPreAbsence.startDate}" title="ex : 18-03-2019"  style="width: 6rem;">
+						<f:convertDateTime type="date" pattern="dd-MM-yyyy" />
+					</h:inputText>&nbsp;
+					<h:inputText style="width: 3rem;" title="ex : 00:00" value="#{ajoutPreAbsence.startTime}">
+						<f:convertDateTime pattern = "HH:mm" />
+					</h:inputText><br>
+					<h:outputLabel for="endDateInput" value="Date / horaire fin: "></h:outputLabel>&nbsp;
+					<h:inputText id="endDateInput" title="ex : 18-03-2019" style="width: 6rem;" value="#{ajoutPreAbsence.endDate}">
+						<f:convertDateTime pattern = "dd-MM-yyyy" timeZone="GMT+1" />
+					</h:inputText>&nbsp;
+					<h:inputText style="width: 3rem;" title="ex : 00:00" value="#{ajoutPreAbsence.endTime}">
+						<f:convertDateTime pattern = "HH:mm" />
+					</h:inputText><br>
+					<h:outputLabel for="acceptation" value="Acceptation : "></h:outputLabel>&nbsp;
+					<h:selectOneMenu id="acceptation" value="#{ajoutPreAbsence.acceptation}">
+						<f:selectItem itemValue="oui" itemLabel="Acceptée"/>
+						<f:selectItem itemValue="non" itemLabel="Non acceptée"/>
+					</h:selectOneMenu><br>
+					<h:outputLabel for="ImportPieceJoint" value="Justification : "></h:outputLabel>&nbsp;
+					<h:inputFile id="ImportPieceJoint" value="#{ajoutPreAbsence.justification}" /><br><br>
+					
+					<h:commandButton styleClass="btn btn-primary" value="Valider" actionListener="#{ajoutPreAbsence.AddAbsence}"></h:commandButton>&nbsp;&nbsp;
+					<h:commandButton styleClass="btn btn-secondary" value="Effacer" actionListener="#{ajoutPreAbsence.clear}"></h:commandButton>
+  				</h:form>
   			</div>
 		</div>
 	</div>
